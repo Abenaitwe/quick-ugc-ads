@@ -31,14 +31,14 @@ const Index = () => {
                 <div className="space-y-4">
                   <div className="rounded-3xl overflow-hidden w-full aspect-square shadow-lg animate-float delay-100 border-4 border-white">
                     <img 
-                      src="/lovable-uploads/8d5ddf8e-f2fa-4848-adb6-1e17ea40d1bf.png" 
+                      src="/lovable-uploads/1ddde169-09d5-4d9a-be82-fcb1193b4edf.png" 
                       alt="UGC sample" 
                       className="w-full h-full object-cover" 
                     />
                   </div>
                   <div className="rounded-3xl overflow-hidden w-full aspect-square shadow-lg animate-float delay-400 border-4 border-white">
                     <img 
-                      src="/lovable-uploads/011a5888-1eb0-4ad7-a308-61379ec4f8b3.png" 
+                      src="/lovable-uploads/6fb85c58-0070-46aa-bb15-bd478ccdae5b.png" 
                       alt="UGC sample" 
                       className="w-full h-full object-cover" 
                     />
@@ -49,14 +49,14 @@ const Index = () => {
                 <div className="space-y-4 pt-8">
                   <div className="rounded-3xl overflow-hidden w-full aspect-square shadow-lg animate-float delay-300 border-4 border-white">
                     <img 
-                      src="/lovable-uploads/9bc0b9a7-6f7e-49cd-8321-b3725671949b.png" 
+                      src="/lovable-uploads/84688461-bf46-402e-b8d6-2e594c65f5db.png" 
                       alt="UGC sample" 
                       className="w-full h-full object-cover" 
                     />
                   </div>
                   <div className="rounded-3xl overflow-hidden w-full aspect-square shadow-lg animate-float delay-200 border-4 border-white">
                     <img 
-                      src="/lovable-uploads/9d4356fc-b755-4a5d-875f-f23aab165e11.png" 
+                      src="/lovable-uploads/4998781c-248a-4e80-850e-11970935287e.png" 
                       alt="UGC sample" 
                       className="w-full h-full object-cover" 
                     />
@@ -113,28 +113,28 @@ const Index = () => {
             <div className="md:hidden w-full overflow-x-auto py-4 flex gap-4 snap-x snap-mandatory">
               <div className="snap-center shrink-0 rounded-3xl overflow-hidden w-40 h-40 shadow-lg border-4 border-white">
                 <img 
-                  src="/lovable-uploads/8d5ddf8e-f2fa-4848-adb6-1e17ea40d1bf.png" 
+                  src="/lovable-uploads/1ddde169-09d5-4d9a-be82-fcb1193b4edf.png" 
                   alt="UGC sample" 
                   className="w-full h-full object-cover" 
                 />
               </div>
               <div className="snap-center shrink-0 rounded-3xl overflow-hidden w-40 h-40 shadow-lg border-4 border-white">
                 <img 
-                  src="/lovable-uploads/9bc0b9a7-6f7e-49cd-8321-b3725671949b.png" 
+                  src="/lovable-uploads/84688461-bf46-402e-b8d6-2e594c65f5db.png" 
                   alt="UGC sample" 
                   className="w-full h-full object-cover" 
                 />
               </div>
               <div className="snap-center shrink-0 rounded-3xl overflow-hidden w-40 h-40 shadow-lg border-4 border-white">
                 <img 
-                  src="/lovable-uploads/9d4356fc-b755-4a5d-875f-f23aab165e11.png" 
+                  src="/lovable-uploads/4998781c-248a-4e80-850e-11970935287e.png" 
                   alt="UGC sample" 
                   className="w-full h-full object-cover" 
                 />
               </div>
               <div className="snap-center shrink-0 rounded-3xl overflow-hidden w-40 h-40 shadow-lg border-4 border-white">
                 <img 
-                  src="/lovable-uploads/011a5888-1eb0-4ad7-a308-61379ec4f8b3.png" 
+                  src="/lovable-uploads/6fb85c58-0070-46aa-bb15-bd478ccdae5b.png" 
                   alt="UGC sample" 
                   className="w-full h-full object-cover" 
                 />
