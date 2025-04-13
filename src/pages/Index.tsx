@@ -1,23 +1,28 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Sparkles, Zap, Play, Clock } from "lucide-react";
-import { UserButton } from "@/components/UserButton";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
   const [isHovered, setIsHovered] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  
+  const handleCreateClick = () => {
+    if (user) {
+      navigate('/creator');
+    } else {
+      navigate('/auth');
+    }
+  };
   
   return (
     <div className="w-full">
       {/* Hero Section - Full height now */}
       <header className="w-full min-h-screen bg-[hsl(271,100%,70%)] text-white flex items-center">
         <div className="container mx-auto px-4 relative flex flex-col">
-          {/* Navigation */}
-          <div className="absolute top-4 right-4 z-10">
-            <UserButton />
-          </div>
-
           <div className="flex flex-col-reverse md:flex-row items-center gap-8 w-full">
             {/* Left side - Image pattern */}
             <div className="w-full md:w-1/3 hidden md:block">
@@ -78,11 +83,12 @@ const Index = () => {
                   No editing skills needed. Pick a template, add your vibe, and launch
                 </p>
                 <div className="flex justify-center">
-                  <Link to="/creator">
-                    <Button className="bg-white text-purple-600 hover:bg-purple-100 hover:text-purple-700 text-lg px-20 py-6 h-auto rounded-full font-medium animate-fade-in flex items-center gap-2">
-                      Create
-                    </Button>
-                  </Link>
+                  <Button 
+                    onClick={handleCreateClick}
+                    className="bg-white text-purple-600 hover:bg-purple-100 hover:text-purple-700 text-lg px-20 py-6 h-auto rounded-full font-medium animate-fade-in flex items-center gap-2"
+                  >
+                    Create
+                  </Button>
                 </div>
               </div>
             </div>
@@ -166,11 +172,12 @@ const Index = () => {
           <p className="text-xl mb-8 max-w-2xl mx-auto">
             Join thousands of content creators who are generating high-converting UGC ads in seconds
           </p>
-          <Link to="/creator">
-            <Button className="bg-purple-600 hover:bg-purple-700 text-white text-lg px-8 py-6 h-auto rounded-full font-medium">
-              Start Creating Free
-            </Button>
-          </Link>
+          <Button 
+            onClick={handleCreateClick} 
+            className="bg-purple-600 hover:bg-purple-700 text-white text-lg px-8 py-6 h-auto rounded-full font-medium"
+          >
+            Start Creating Free
+          </Button>
         </div>
       </section>
     </div>
