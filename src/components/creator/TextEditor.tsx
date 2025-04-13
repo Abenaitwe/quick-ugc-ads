@@ -1,0 +1,55 @@
+
+import React from "react";
+import { Sparkle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+
+interface TextEditorProps {
+  adText: string;
+  setAdText: (text: string) => void;
+  textPosition: "top" | "middle" | "bottom";
+  handleTextPositionChange: (position: "top" | "middle" | "bottom") => void;
+}
+
+const TextEditor = ({ adText, setAdText, textPosition, handleTextPositionChange }: TextEditorProps) => {
+  return (
+    <div className="bg-gray-100 rounded-lg p-4">
+      <div className="flex justify-between items-center mb-3">
+        <h2 className="text-base font-medium">Add Video Text</h2>
+        <Button variant="outline" size="sm" className="text-xs bg-gray-200 hover:bg-gray-300 border-0 flex items-center gap-1 px-3 py-1">
+          generate <Sparkle className="h-3 w-3" />
+        </Button>
+      </div>
+      
+      <Textarea 
+        className="w-full h-20 p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none mb-3 text-sm"
+        placeholder="Your taste....."
+        value={adText}
+        onChange={(e) => setAdText(e.target.value)}
+      />
+      
+      <div className="flex justify-between items-center">
+        <button 
+          className={`px-4 py-1.5 rounded-md text-sm ${textPosition === 'top' ? 'bg-gray-200' : 'bg-transparent'}`}
+          onClick={() => handleTextPositionChange('top')}
+        >
+          Top
+        </button>
+        <button 
+          className={`px-4 py-1.5 rounded-md text-sm ${textPosition === 'middle' ? 'bg-green-400 text-white' : 'bg-transparent'}`}
+          onClick={() => handleTextPositionChange('middle')}
+        >
+          Middle
+        </button>
+        <button 
+          className={`px-4 py-1.5 rounded-md text-sm ${textPosition === 'bottom' ? 'bg-gray-200' : 'bg-transparent'}`}
+          onClick={() => handleTextPositionChange('bottom')}
+        >
+          Bottom
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default TextEditor;
