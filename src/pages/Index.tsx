@@ -37,44 +37,49 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Floating images */}
+          {/* Floating images - reorganized into a more balanced, pleasing pattern */}
           <div className="absolute inset-0 w-full h-full overflow-hidden">
-            <div className="absolute top-10 left-10 rounded-3xl overflow-hidden w-36 h-36 shadow-lg animate-float delay-100 border-4 border-white">
+            {/* Top row */}
+            <div className="absolute top-[10%] left-[15%] rounded-3xl overflow-hidden w-36 h-36 shadow-lg animate-float delay-100 border-4 border-white">
               <img 
                 src="/public/lovable-uploads/7e5d2bad-0f45-4daa-b0af-7f94ff2d5de0.png" 
                 alt="UGC sample" 
                 className="w-full h-full object-cover" 
               />
             </div>
-            <div className="absolute top-20 right-10 rounded-3xl overflow-hidden w-44 h-44 shadow-lg animate-float delay-300 border-4 border-white">
+            <div className="absolute top-[8%] right-[15%] rounded-3xl overflow-hidden w-44 h-44 shadow-lg animate-float delay-300 border-4 border-white">
               <img 
                 src="/public/lovable-uploads/c4e747d2-b1db-4f11-bef8-b171f4aa64d4.png" 
                 alt="UGC sample" 
                 className="w-full h-full object-cover" 
               />
             </div>
-            <div className="absolute bottom-32 left-1/4 rounded-3xl overflow-hidden w-40 h-40 shadow-lg animate-float delay-200 border-4 border-white">
+            
+            {/* Middle row - left & right sides */}
+            <div className="absolute top-[40%] left-[8%] rounded-3xl overflow-hidden w-40 h-40 shadow-lg animate-float delay-200 border-4 border-white">
               <img 
                 src="/public/lovable-uploads/e2dbf4bd-c5d7-498c-a89e-bcd56a1c439b.png" 
                 alt="UGC sample" 
                 className="w-full h-full object-cover" 
               />
             </div>
-            <div className="absolute bottom-40 right-1/4 rounded-3xl overflow-hidden w-40 h-40 shadow-lg animate-float delay-400 border-4 border-white">
+            <div className="absolute top-[38%] right-[8%] rounded-3xl overflow-hidden w-36 h-36 shadow-lg animate-float delay-500 border-4 border-white">
               <img 
                 src="/public/lovable-uploads/03078dbb-8dba-408e-a18f-6bed787e3bb9.png" 
                 alt="UGC sample" 
                 className="w-full h-full object-cover" 
               />
             </div>
-            <div className="absolute top-40 left-1/3 rounded-3xl overflow-hidden w-36 h-36 shadow-lg animate-float delay-500 border-4 border-white">
+            
+            {/* Bottom row */}
+            <div className="absolute bottom-[10%] left-[20%] rounded-3xl overflow-hidden w-40 h-40 shadow-lg animate-float delay-400 border-4 border-white">
               <img 
                 src="/public/lovable-uploads/03078dbb-8dba-408e-a18f-6bed787e3bb9.png" 
                 alt="UGC sample" 
                 className="w-full h-full object-cover" 
               />
             </div>
-            <div className="absolute bottom-20 right-10 rounded-3xl overflow-hidden w-48 h-48 shadow-lg animate-float delay-200 border-4 border-white">
+            <div className="absolute bottom-[12%] right-[20%] rounded-3xl overflow-hidden w-48 h-48 shadow-lg animate-float delay-200 border-4 border-white">
               <img 
                 src="/public/lovable-uploads/7e5d2bad-0f45-4daa-b0af-7f94ff2d5de0.png" 
                 alt="UGC sample" 
