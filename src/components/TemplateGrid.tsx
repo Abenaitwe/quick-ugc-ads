@@ -14,11 +14,15 @@ interface TemplateGridProps {
 
 const TemplateGrid: React.FC<TemplateGridProps> = ({ templates, selectedId, onSelect }) => {
   return (
-    <div className="template-grid">
+    <>
       {templates.map((template) => (
         <div
           key={template.id}
-          className={`template-item ${selectedId === template.id ? "selected" : ""}`}
+          className={`aspect-[9/16] cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${
+            selectedId === template.id
+              ? "border-purple-500 ring-2 ring-purple-300 scale-[1.02]"
+              : "border-gray-200 hover:border-gray-300"
+          }`}
           onClick={() => onSelect(template.id)}
         >
           <img
@@ -29,7 +33,7 @@ const TemplateGrid: React.FC<TemplateGridProps> = ({ templates, selectedId, onSe
           />
         </div>
       ))}
-    </div>
+    </>
   );
 };
 
