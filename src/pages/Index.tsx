@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Sparkles, Zap, Play, Clock, Lock } from "lucide-react";
+import { Sparkles, Zap, Play, Clock } from "lucide-react";
+import { UserButton } from "@/components/UserButton";
 
 const Index = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -11,7 +12,12 @@ const Index = () => {
     <div className="w-full">
       {/* Hero Section - Full height now */}
       <header className="w-full min-h-screen bg-[hsl(271,100%,70%)] text-white flex items-center">
-        <div className="container mx-auto px-4 relative flex items-center justify-center">
+        <div className="container mx-auto px-4 relative flex flex-col">
+          {/* Navigation */}
+          <div className="absolute top-4 right-4 z-10">
+            <UserButton />
+          </div>
+
           <div className="flex flex-col-reverse md:flex-row items-center gap-8 w-full">
             {/* Left side - Image pattern */}
             <div className="w-full md:w-1/3 hidden md:block">
@@ -74,7 +80,6 @@ const Index = () => {
                 <div className="flex justify-center">
                   <Link to="/creator">
                     <Button className="bg-white text-purple-600 hover:bg-purple-100 hover:text-purple-700 text-lg px-20 py-6 h-auto rounded-full font-medium animate-fade-in flex items-center gap-2">
-                      <Lock className="h-5 w-5" />
                       Create
                     </Button>
                   </Link>
