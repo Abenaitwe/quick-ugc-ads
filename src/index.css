@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -34,6 +33,8 @@
     --ring: 265 89% 78%;
 
     --radius: 0.5rem;
+    
+    --custom-purple: 271 100% 70%;
   }
 }
 
@@ -82,6 +83,10 @@
   
   .glass-morphism {
     @apply backdrop-blur-lg bg-white/20 border border-white/30 shadow-lg;
+  }
+
+  .logo-text {
+    @apply font-bold text-white text-3xl;
   }
 }
 

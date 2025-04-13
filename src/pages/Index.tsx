@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -8,8 +7,13 @@ const Index = () => {
   return (
     <div className="w-full">
       {/* Hero Section - Full height now */}
-      <header className="w-full min-h-screen bg-gradient-to-r from-purple-600 to-purple-500 text-white flex items-center">
+      <header className="w-full min-h-screen bg-[hsl(271,100%,70%)] text-white flex items-center">
         <div className="container mx-auto px-4 relative overflow-hidden flex flex-col items-center justify-center">
+          {/* Logo */}
+          <div className="absolute top-8 left-8 z-30">
+            <h1 className="logo-text">InstantUGC</h1>
+          </div>
+          
           {/* Glass morphism tab in center */}
           <div className="glass-morphism rounded-3xl p-8 mb-8 w-full max-w-3xl mx-auto text-center z-20 relative backdrop-blur-lg bg-white/20 border border-white/30 shadow-lg">
             <div className="flex justify-center mb-4">
@@ -35,7 +39,7 @@ const Index = () => {
             </Link>
           </div>
 
-          {/* Floating images mimicking the reference design */}
+          {/* Floating images */}
           <div className="absolute inset-0 w-full h-full overflow-hidden">
             <div className="absolute top-10 left-10 rounded-3xl overflow-hidden w-36 h-36 shadow-lg animate-float delay-100 border-4 border-white">
               <img 
