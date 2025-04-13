@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -26,12 +27,14 @@ const Index = () => {
             <p className="text-xl mb-8 animate-fade-in opacity-90">
               The fastest way to create engaging, conversion-driven UGC content
             </p>
-            <Link to="/creator">
-              <Button className="bg-white text-purple-600 hover:bg-purple-100 hover:text-purple-700 text-lg px-8 py-6 h-auto rounded-full font-medium animate-fade-in flex items-center gap-2">
-                <Lock className="h-5 w-5" />
-                Get Dripping
-              </Button>
-            </Link>
+            <div className="flex justify-center">
+              <Link to="/creator">
+                <Button className="bg-white text-purple-600 hover:bg-purple-100 hover:text-purple-700 text-lg px-8 py-6 h-auto rounded-full font-medium animate-fade-in flex items-center gap-2">
+                  <Lock className="h-5 w-5" />
+                  Create
+                </Button>
+              </Link>
+            </div>
           </div>
 
           {/* Floating images */}
