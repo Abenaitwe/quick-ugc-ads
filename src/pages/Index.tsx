@@ -2,49 +2,79 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Sparkles, Zap, Play, Clock } from "lucide-react";
+import { Sparkles, Zap, Play, Clock, Lock } from "lucide-react";
 
 const Index = () => {
   return (
     <div className="w-full">
-      {/* Hero Section */}
-      <header className="w-full bg-gradient-to-r from-purple-600 to-purple-500 text-white">
-        <div className="container mx-auto px-4 py-16 relative overflow-hidden">
-          <div className="max-w-3xl mx-auto text-center z-10 relative">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
+      {/* Hero Section - Full height now */}
+      <header className="w-full min-h-screen bg-gradient-to-r from-purple-600 to-purple-500 text-white flex items-center">
+        <div className="container mx-auto px-4 relative overflow-hidden flex flex-col items-center justify-center">
+          {/* Glass morphism tab in center */}
+          <div className="glass-morphism rounded-3xl p-8 mb-8 w-full max-w-3xl mx-auto text-center z-20 relative backdrop-blur-lg bg-white/20 border border-white/30 shadow-lg">
+            <div className="flex justify-center mb-4">
+              <div className="flex flex-col gap-1">
+                <div className="h-2 w-16 bg-pink-500 rounded-full"></div>
+                <div className="h-2 w-16 bg-yellow-400 rounded-full"></div>
+                <div className="h-2 w-16 bg-orange-400 rounded-full"></div>
+              </div>
+            </div>
+            
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
               Create UGC Ads
-              <span className="block">in Seconds</span>
+              <span className="block mt-1">in Seconds</span>
             </h1>
             <p className="text-xl mb-8 animate-fade-in opacity-90">
-              The fastest way to create engaging, conversion-driven UGC content for your brand
+              The fastest way to create engaging, conversion-driven UGC content
             </p>
             <Link to="/creator">
-              <Button className="bg-white text-purple-600 hover:bg-purple-100 hover:text-purple-700 text-lg px-8 py-6 h-auto rounded-full font-medium animate-fade-in">
-                <Zap className="mr-2 h-5 w-5" />
-                Start Creating Now
+              <Button className="bg-white text-purple-600 hover:bg-purple-100 hover:text-purple-700 text-lg px-8 py-6 h-auto rounded-full font-medium animate-fade-in flex items-center gap-2">
+                <Lock className="h-5 w-5" />
+                Get Dripping
               </Button>
             </Link>
           </div>
 
           {/* Floating images mimicking the reference design */}
-          <div className="hidden md:block">
-            <div className="absolute -top-10 left-10 rounded-2xl overflow-hidden w-36 h-36 shadow-lg animate-float delay-100">
+          <div className="absolute inset-0 w-full h-full overflow-hidden">
+            <div className="absolute top-10 left-10 rounded-3xl overflow-hidden w-36 h-36 shadow-lg animate-float delay-100 border-4 border-white">
               <img 
                 src="/public/lovable-uploads/7e5d2bad-0f45-4daa-b0af-7f94ff2d5de0.png" 
                 alt="UGC sample" 
                 className="w-full h-full object-cover" 
               />
             </div>
-            <div className="absolute top-20 right-10 rounded-2xl overflow-hidden w-44 h-44 shadow-lg animate-float delay-300">
+            <div className="absolute top-20 right-10 rounded-3xl overflow-hidden w-44 h-44 shadow-lg animate-float delay-300 border-4 border-white">
               <img 
                 src="/public/lovable-uploads/c4e747d2-b1db-4f11-bef8-b171f4aa64d4.png" 
                 alt="UGC sample" 
                 className="w-full h-full object-cover" 
               />
             </div>
-            <div className="absolute bottom-10 left-1/4 rounded-2xl overflow-hidden w-40 h-40 shadow-lg animate-float delay-200">
+            <div className="absolute bottom-32 left-1/4 rounded-3xl overflow-hidden w-40 h-40 shadow-lg animate-float delay-200 border-4 border-white">
               <img 
                 src="/public/lovable-uploads/e2dbf4bd-c5d7-498c-a89e-bcd56a1c439b.png" 
+                alt="UGC sample" 
+                className="w-full h-full object-cover" 
+              />
+            </div>
+            <div className="absolute bottom-40 right-1/4 rounded-3xl overflow-hidden w-40 h-40 shadow-lg animate-float delay-400 border-4 border-white">
+              <img 
+                src="/public/lovable-uploads/03078dbb-8dba-408e-a18f-6bed787e3bb9.png" 
+                alt="UGC sample" 
+                className="w-full h-full object-cover" 
+              />
+            </div>
+            <div className="absolute top-40 left-1/3 rounded-3xl overflow-hidden w-36 h-36 shadow-lg animate-float delay-500 border-4 border-white">
+              <img 
+                src="/public/lovable-uploads/03078dbb-8dba-408e-a18f-6bed787e3bb9.png" 
+                alt="UGC sample" 
+                className="w-full h-full object-cover" 
+              />
+            </div>
+            <div className="absolute bottom-20 right-10 rounded-3xl overflow-hidden w-48 h-48 shadow-lg animate-float delay-200 border-4 border-white">
+              <img 
+                src="/public/lovable-uploads/7e5d2bad-0f45-4daa-b0af-7f94ff2d5de0.png" 
                 alt="UGC sample" 
                 className="w-full h-full object-cover" 
               />

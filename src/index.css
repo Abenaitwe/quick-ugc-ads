@@ -43,7 +43,11 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-x-hidden;
+  }
+  
+  html {
+    @apply scroll-smooth;
   }
 }
 
@@ -75,4 +79,52 @@
   .upload-area {
     @apply flex flex-col items-center justify-center border-2 border-dashed rounded-md p-6 text-center cursor-pointer transition-all hover:bg-purple-50;
   }
+  
+  .glass-morphism {
+    @apply backdrop-blur-lg bg-white/20 border border-white/30 shadow-lg;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float.delay-100 {
+  animation-delay: 1s;
+}
+
+.animate-float.delay-200 {
+  animation-delay: 2s;
+}
+
+.animate-float.delay-300 {
+  animation-delay: 3s;
+}
+
+.animate-float.delay-400 {
+  animation-delay: 4s;
+}
+
+.animate-float.delay-500 {
+  animation-delay: 5s;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
 }
