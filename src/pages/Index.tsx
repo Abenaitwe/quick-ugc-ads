@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { Sparkles, Zap, Play, Clock } from "lucide-react";
+import { Sparkles, Zap, Play, Clock, Lock } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
@@ -85,21 +85,24 @@ const Index = () => {
                 <div className="flex justify-center">
                   <Button 
                     onClick={handleCreateClick}
-                    className="bg-[#f2f0f7] text-black hover:bg-[#e8e5f0] text-lg px-20 py-6 h-auto rounded-full font-medium animate-fade-in flex items-center gap-2 shadow-[0_8px_25px_-5px_rgba(180,165,225,0.5)] border border-white/50"
+                    className="relative bg-[#EFF0F6] text-black text-lg px-20 py-6 h-auto rounded-full font-medium animate-fade-in flex items-center justify-center gap-3 shadow-[0_8px_16px_-2px_rgba(130,119,170,0.35)] border border-white"
                     style={{
-                      background: 'linear-gradient(180deg, #ffffff 0%, #f2f0f7 100%)',
-                      boxShadow: '0 8px 25px -5px rgba(180, 165, 225, 0.5), 0 2px 2px rgba(255, 255, 255, 0.9) inset',
+                      background: 'linear-gradient(180deg, #F8F9FD 0%, #EFF0F6 100%)',
+                      boxShadow: '0 8px 16px -2px rgba(130, 119, 170, 0.35), 0 1px 2px rgba(255, 255, 255, 0.9) inset',
                       transition: 'all 0.3s ease',
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.transform = 'translateY(-1px)';
-                      e.currentTarget.style.boxShadow = '0 10px 30px -5px rgba(180, 165, 225, 0.6), 0 2px 2px rgba(255, 255, 255, 0.9) inset';
+                      e.currentTarget.style.boxShadow = '0 10px 20px -2px rgba(130, 119, 170, 0.5), 0 1px 2px rgba(255, 255, 255, 0.9) inset';
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = '0 8px 25px -5px rgba(180, 165, 225, 0.5), 0 2px 2px rgba(255, 255, 255, 0.9) inset';
+                      e.currentTarget.style.boxShadow = '0 8px 16px -2px rgba(130, 119, 170, 0.35), 0 1px 2px rgba(255, 255, 255, 0.9) inset';
                     }}
                   >
+                    <div className="flex items-center justify-center bg-white rounded-full w-10 h-10 shadow-md">
+                      <Lock className="h-4 w-4 text-black" />
+                    </div>
                     Create
                   </Button>
                 </div>
@@ -187,21 +190,24 @@ const Index = () => {
           </p>
           <Button 
             onClick={handleCreateClick} 
-            className="bg-[#f2f0f7] text-black hover:bg-[#e8e5f0] text-lg px-8 py-6 h-auto rounded-full font-medium shadow-[0_8px_25px_-5px_rgba(180,165,225,0.5)] border border-white/50"
+            className="relative bg-[#EFF0F6] text-black text-lg px-8 py-6 h-auto rounded-full font-medium flex items-center justify-center gap-3 shadow-[0_8px_16px_-2px_rgba(130,119,170,0.35)] border border-white"
             style={{
-              background: 'linear-gradient(180deg, #ffffff 0%, #f2f0f7 100%)',
-              boxShadow: '0 8px 25px -5px rgba(180, 165, 225, 0.5), 0 2px 2px rgba(255, 255, 255, 0.9) inset',
+              background: 'linear-gradient(180deg, #F8F9FD 0%, #EFF0F6 100%)',
+              boxShadow: '0 8px 16px -2px rgba(130, 119, 170, 0.35), 0 1px 2px rgba(255, 255, 255, 0.9) inset',
               transition: 'all 0.3s ease',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-1px)';
-              e.currentTarget.style.boxShadow = '0 10px 30px -5px rgba(180, 165, 225, 0.6), 0 2px 2px rgba(255, 255, 255, 0.9) inset';
+              e.currentTarget.style.boxShadow = '0 10px 20px -2px rgba(130, 119, 170, 0.5), 0 1px 2px rgba(255, 255, 255, 0.9) inset';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 8px 25px -5px rgba(180, 165, 225, 0.5), 0 2px 2px rgba(255, 255, 255, 0.9) inset';
+              e.currentTarget.style.boxShadow = '0 8px 16px -2px rgba(130, 119, 170, 0.35), 0 1px 2px rgba(255, 255, 255, 0.9) inset';
             }}
           >
+            <div className="flex items-center justify-center bg-white rounded-full w-8 h-8 shadow-md">
+              <Lock className="h-3.5 w-3.5 text-black" />
+            </div>
             Start Creating Free
           </Button>
         </div>
