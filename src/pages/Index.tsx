@@ -11,9 +11,6 @@ const Index = () => {
       {/* Hero Section - Full height now */}
       <header className="w-full min-h-screen bg-[hsl(271,100%,70%)] text-white flex items-center">
         <div className="container mx-auto px-4 relative overflow-hidden flex flex-col items-center justify-center">
-          {/* Centered title instead of logo */}
-          <h1 className="text-white text-3xl font-bold text-center w-full mb-8">InstantUGC</h1>
-          
           {/* Glass morphism tab in center with hover effect */}
           <div 
             className={`glass-morphism rounded-3xl p-8 mb-8 w-full max-w-3xl mx-auto text-center z-20 relative backdrop-blur-lg 
@@ -21,6 +18,7 @@ const Index = () => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
+            <h2 className="text-white text-2xl font-bold mb-4">InstantUGC</h2>
             <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
               Create UGC Ads
               <span className="block mt-1">in Seconds</span>
