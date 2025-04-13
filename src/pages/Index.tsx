@@ -1,9 +1,12 @@
-import React from "react";
+
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Sparkles, Zap, Play, Clock, Lock } from "lucide-react";
 
 const Index = () => {
+  const [isHovered, setIsHovered] = useState(false);
+  
   return (
     <div className="w-full">
       {/* Hero Section - Full height now */}
@@ -12,8 +15,14 @@ const Index = () => {
           {/* Centered title instead of logo */}
           <h1 className="text-white text-3xl font-bold text-center w-full mb-8">InstantUGC</h1>
           
-          {/* Glass morphism tab in center */}
-          <div className="glass-morphism rounded-3xl p-8 mb-8 w-full max-w-3xl mx-auto text-center z-20 relative backdrop-blur-lg bg-white/20 border border-white/30 shadow-lg">
+          {/* Glass morphism tab in center with hover effect */}
+          <div 
+            className={`glass-morphism rounded-3xl p-8 mb-8 w-full max-w-3xl mx-auto text-center z-20 relative backdrop-blur-lg 
+            bg-white/20 border ${isHovered ? 'border-white shadow-[0_0_15px_rgba(255,255,255,0.5)] transition-all duration-300' : 'border-white/30 shadow-lg'}`}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <h2 className="text-white text-2xl font-bold mb-4">InstantUGC</h2>
             <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
               Create UGC Ads
               <span className="block mt-1">in Seconds</span>
