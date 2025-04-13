@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -20,7 +21,7 @@ const Index = () => {
               <div className="flex flex-col gap-1">
                 <div className="h-2 w-16 bg-pink-500 rounded-full"></div>
                 <div className="h-2 w-16 bg-yellow-400 rounded-full"></div>
-                <div className="h-2 w-16 bg-orange-400 rounded-full"></div>
+                <div className="h-2 w-16 bg-purple-400 rounded-full"></div>
               </div>
             </div>
             
