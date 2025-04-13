@@ -68,7 +68,7 @@ const Index = () => {
                   Create UGC Ads
                   <span className="block mt-1">in Seconds</span>
                 </h1>
-                <p className="text-xl mb-8 animate-fade-in opacity-90 whitespace-nowrap overflow-hidden">
+                <p className="text-lg mb-8 animate-fade-in opacity-90 whitespace-nowrap overflow-hidden">
                   No editing skills needed. Pick a template, add your vibe, and launch
                 </p>
                 <div className="flex justify-center">
