@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -22,7 +21,6 @@ const Index = () => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            <h2 className="text-white text-2xl font-bold mb-4">InstantUGC</h2>
             <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
               Create UGC Ads
               <span className="block mt-1">in Seconds</span>
