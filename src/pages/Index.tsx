@@ -11,80 +11,107 @@ const Index = () => {
     <div className="w-full">
       {/* Hero Section - Full height now */}
       <header className="w-full min-h-screen bg-[hsl(271,100%,70%)] text-white flex items-center">
-        <div className="container mx-auto px-4 relative overflow-hidden flex flex-col items-center justify-center">
-          {/* Floating images - reorganized into a more balanced, pleasing pattern */}
-          <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
-            {/* Top row */}
-            <div className="absolute top-[5%] left-[15%] rounded-3xl overflow-hidden w-36 h-36 shadow-lg animate-float delay-100 border-4 border-white">
-              <img 
-                src="/public/lovable-uploads/7e5d2bad-0f45-4daa-b0af-7f94ff2d5de0.png" 
-                alt="UGC sample" 
-                className="w-full h-full object-cover" 
-              />
-            </div>
-            <div className="absolute top-[3%] right-[15%] rounded-3xl overflow-hidden w-44 h-44 shadow-lg animate-float delay-300 border-4 border-white">
-              <img 
-                src="/public/lovable-uploads/c4e747d2-b1db-4f11-bef8-b171f4aa64d4.png" 
-                alt="UGC sample" 
-                className="w-full h-full object-cover" 
-              />
+        <div className="container mx-auto px-4 relative flex items-center justify-center">
+          <div className="flex flex-col-reverse md:flex-row items-center gap-8 w-full">
+            {/* Left side - Image pattern */}
+            <div className="w-full md:w-1/3 hidden md:block">
+              <div className="grid grid-cols-2 gap-4">
+                {/* First column */}
+                <div className="space-y-4">
+                  <div className="rounded-3xl overflow-hidden w-full aspect-square shadow-lg animate-float delay-100 border-4 border-white">
+                    <img 
+                      src="/public/lovable-uploads/7e5d2bad-0f45-4daa-b0af-7f94ff2d5de0.png" 
+                      alt="UGC sample" 
+                      className="w-full h-full object-cover" 
+                    />
+                  </div>
+                  <div className="rounded-3xl overflow-hidden w-full aspect-square shadow-lg animate-float delay-400 border-4 border-white">
+                    <img 
+                      src="/public/lovable-uploads/03078dbb-8dba-408e-a18f-6bed787e3bb9.png" 
+                      alt="UGC sample" 
+                      className="w-full h-full object-cover" 
+                    />
+                  </div>
+                </div>
+                
+                {/* Second column */}
+                <div className="space-y-4 pt-8">
+                  <div className="rounded-3xl overflow-hidden w-full aspect-square shadow-lg animate-float delay-300 border-4 border-white">
+                    <img 
+                      src="/public/lovable-uploads/c4e747d2-b1db-4f11-bef8-b171f4aa64d4.png" 
+                      alt="UGC sample" 
+                      className="w-full h-full object-cover" 
+                    />
+                  </div>
+                  <div className="rounded-3xl overflow-hidden w-full aspect-square shadow-lg animate-float delay-200 border-4 border-white">
+                    <img 
+                      src="/public/lovable-uploads/e2dbf4bd-c5d7-498c-a89e-bcd56a1c439b.png" 
+                      alt="UGC sample" 
+                      className="w-full h-full object-cover" 
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
             
-            {/* Middle row - left & right sides */}
-            <div className="absolute top-[40%] left-[8%] rounded-3xl overflow-hidden w-40 h-40 shadow-lg animate-float delay-200 border-4 border-white z-10">
-              <img 
-                src="/public/lovable-uploads/e2dbf4bd-c5d7-498c-a89e-bcd56a1c439b.png" 
-                alt="UGC sample" 
-                className="w-full h-full object-cover" 
-              />
+            {/* Right side - Glass morphism tab */}
+            <div className="w-full md:w-2/3">
+              {/* Glass morphism tab with hover effect */}
+              <div 
+                className={`glass-morphism rounded-3xl p-8 mb-8 w-full mx-auto text-center backdrop-blur-lg 
+                bg-white/20 border ${isHovered ? 'border-white shadow-[0_0_15px_rgba(255,255,255,0.5)] transition-all duration-300' : 'border-white/30 shadow-lg'}`}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                <h2 className="text-white text-2xl font-bold mb-4">InstantUGC</h2>
+                <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
+                  Create UGC Ads
+                  <span className="block mt-1">in Seconds</span>
+                </h1>
+                <p className="text-xl mb-8 animate-fade-in opacity-90">
+                  The fastest way to create engaging, conversion-driven UGC content
+                </p>
+                <div className="flex justify-center">
+                  <Link to="/creator">
+                    <Button className="bg-white text-purple-600 hover:bg-purple-100 hover:text-purple-700 text-lg px-20 py-6 h-auto rounded-full font-medium animate-fade-in flex items-center gap-2">
+                      <Lock className="h-5 w-5" />
+                      Create
+                    </Button>
+                  </Link>
+                </div>
+              </div>
             </div>
-            <div className="absolute top-[38%] right-[8%] rounded-3xl overflow-hidden w-36 h-36 shadow-lg animate-float delay-500 border-4 border-white z-10">
-              <img 
-                src="/public/lovable-uploads/03078dbb-8dba-408e-a18f-6bed787e3bb9.png" 
-                alt="UGC sample" 
-                className="w-full h-full object-cover" 
-              />
-            </div>
-            
-            {/* Bottom row */}
-            <div className="absolute bottom-[10%] left-[20%] rounded-3xl overflow-hidden w-40 h-40 shadow-lg animate-float delay-400 border-4 border-white z-10">
-              <img 
-                src="/public/lovable-uploads/03078dbb-8dba-408e-a18f-6bed787e3bb9.png" 
-                alt="UGC sample" 
-                className="w-full h-full object-cover" 
-              />
-            </div>
-            <div className="absolute bottom-[12%] right-[20%] rounded-3xl overflow-hidden w-48 h-48 shadow-lg animate-float delay-200 border-4 border-white z-10">
-              <img 
-                src="/public/lovable-uploads/7e5d2bad-0f45-4daa-b0af-7f94ff2d5de0.png" 
-                alt="UGC sample" 
-                className="w-full h-full object-cover" 
-              />
-            </div>
-          </div>
 
-          {/* Glass morphism tab in center with hover effect */}
-          <div 
-            className={`glass-morphism rounded-3xl p-8 mb-8 w-full max-w-3xl mx-auto text-center relative backdrop-blur-lg 
-            bg-white/20 border ${isHovered ? 'border-white shadow-[0_0_15px_rgba(255,255,255,0.5)] transition-all duration-300' : 'border-white/30 shadow-lg'}`}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <h2 className="text-white text-2xl font-bold mb-4">InstantUGC</h2>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
-              Create UGC Ads
-              <span className="block mt-1">in Seconds</span>
-            </h1>
-            <p className="text-xl mb-8 animate-fade-in opacity-90">
-              The fastest way to create engaging, conversion-driven UGC content
-            </p>
-            <div className="flex justify-center">
-              <Link to="/creator">
-                <Button className="bg-white text-purple-600 hover:bg-purple-100 hover:text-purple-700 text-lg px-16 py-6 h-auto rounded-full font-medium animate-fade-in flex items-center gap-2">
-                  <Lock className="h-5 w-5" />
-                  Create
-                </Button>
-              </Link>
+            {/* Mobile images - shown only on small screens in a horizontal scroll */}
+            <div className="md:hidden w-full overflow-x-auto py-4 flex gap-4 snap-x snap-mandatory">
+              <div className="snap-center shrink-0 rounded-3xl overflow-hidden w-40 h-40 shadow-lg border-4 border-white">
+                <img 
+                  src="/public/lovable-uploads/7e5d2bad-0f45-4daa-b0af-7f94ff2d5de0.png" 
+                  alt="UGC sample" 
+                  className="w-full h-full object-cover" 
+                />
+              </div>
+              <div className="snap-center shrink-0 rounded-3xl overflow-hidden w-40 h-40 shadow-lg border-4 border-white">
+                <img 
+                  src="/public/lovable-uploads/c4e747d2-b1db-4f11-bef8-b171f4aa64d4.png" 
+                  alt="UGC sample" 
+                  className="w-full h-full object-cover" 
+                />
+              </div>
+              <div className="snap-center shrink-0 rounded-3xl overflow-hidden w-40 h-40 shadow-lg border-4 border-white">
+                <img 
+                  src="/public/lovable-uploads/e2dbf4bd-c5d7-498c-a89e-bcd56a1c439b.png" 
+                  alt="UGC sample" 
+                  className="w-full h-full object-cover" 
+                />
+              </div>
+              <div className="snap-center shrink-0 rounded-3xl overflow-hidden w-40 h-40 shadow-lg border-4 border-white">
+                <img 
+                  src="/public/lovable-uploads/03078dbb-8dba-408e-a18f-6bed787e3bb9.png" 
+                  alt="UGC sample" 
+                  className="w-full h-full object-cover" 
+                />
+              </div>
             </div>
           </div>
         </div>
