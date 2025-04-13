@@ -14,14 +14,6 @@ const Index = () => {
           
           {/* Glass morphism tab in center */}
           <div className="glass-morphism rounded-3xl p-8 mb-8 w-full max-w-3xl mx-auto text-center z-20 relative backdrop-blur-lg bg-white/20 border border-white/30 shadow-lg">
-            <div className="flex justify-center mb-4">
-              <div className="flex flex-col gap-1">
-                <div className="h-2 w-16 bg-pink-500 rounded-full"></div>
-                <div className="h-2 w-16 bg-yellow-400 rounded-full"></div>
-                <div className="h-2 w-16 bg-purple-400 rounded-full"></div>
-              </div>
-            </div>
-            
             <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
               Create UGC Ads
               <span className="block mt-1">in Seconds</span>
