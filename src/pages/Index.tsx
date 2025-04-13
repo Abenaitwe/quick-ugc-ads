@@ -85,7 +85,20 @@ const Index = () => {
                 <div className="flex justify-center">
                   <Button 
                     onClick={handleCreateClick}
-                    className="bg-white text-purple-600 hover:bg-purple-100 hover:text-purple-700 text-lg px-20 py-6 h-auto rounded-full font-medium animate-fade-in flex items-center gap-2"
+                    className="bg-[#f2f0f7] text-black hover:bg-[#e8e5f0] text-lg px-20 py-6 h-auto rounded-full font-medium animate-fade-in flex items-center gap-2 shadow-[0_8px_25px_-5px_rgba(180,165,225,0.5)] border border-white/50"
+                    style={{
+                      background: 'linear-gradient(180deg, #ffffff 0%, #f2f0f7 100%)',
+                      boxShadow: '0 8px 25px -5px rgba(180, 165, 225, 0.5), 0 2px 2px rgba(255, 255, 255, 0.9) inset',
+                      transition: 'all 0.3s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-1px)';
+                      e.currentTarget.style.boxShadow = '0 10px 30px -5px rgba(180, 165, 225, 0.6), 0 2px 2px rgba(255, 255, 255, 0.9) inset';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = '0 8px 25px -5px rgba(180, 165, 225, 0.5), 0 2px 2px rgba(255, 255, 255, 0.9) inset';
+                    }}
                   >
                     Create
                   </Button>
@@ -174,7 +187,20 @@ const Index = () => {
           </p>
           <Button 
             onClick={handleCreateClick} 
-            className="bg-purple-600 hover:bg-purple-700 text-white text-lg px-8 py-6 h-auto rounded-full font-medium"
+            className="bg-[#f2f0f7] text-black hover:bg-[#e8e5f0] text-lg px-8 py-6 h-auto rounded-full font-medium shadow-[0_8px_25px_-5px_rgba(180,165,225,0.5)] border border-white/50"
+            style={{
+              background: 'linear-gradient(180deg, #ffffff 0%, #f2f0f7 100%)',
+              boxShadow: '0 8px 25px -5px rgba(180, 165, 225, 0.5), 0 2px 2px rgba(255, 255, 255, 0.9) inset',
+              transition: 'all 0.3s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.boxShadow = '0 10px 30px -5px rgba(180, 165, 225, 0.6), 0 2px 2px rgba(255, 255, 255, 0.9) inset';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 8px 25px -5px rgba(180, 165, 225, 0.5), 0 2px 2px rgba(255, 255, 255, 0.9) inset';
+            }}
           >
             Start Creating Free
           </Button>
