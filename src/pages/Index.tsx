@@ -29,7 +29,7 @@ const Index = () => {
             </p>
             <div className="flex justify-center">
               <Link to="/creator">
-                <Button className="bg-white text-purple-600 hover:bg-purple-100 hover:text-purple-700 text-lg px-8 py-6 h-auto rounded-full font-medium animate-fade-in flex items-center gap-2">
+                <Button className="bg-white text-purple-600 hover:bg-purple-100 hover:text-purple-700 text-lg px-16 py-6 h-auto rounded-full font-medium animate-fade-in flex items-center gap-2">
                   <Lock className="h-5 w-5" />
                   Create
                 </Button>
