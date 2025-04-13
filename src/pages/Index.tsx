@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -10,10 +9,8 @@ const Index = () => {
       {/* Hero Section - Full height now */}
       <header className="w-full min-h-screen bg-[hsl(271,100%,70%)] text-white flex items-center">
         <div className="container mx-auto px-4 relative overflow-hidden flex flex-col items-center justify-center">
-          {/* Logo */}
-          <div className="absolute top-8 left-8 z-30">
-            <h1 className="logo-text">InstantUGC</h1>
-          </div>
+          {/* Centered title instead of logo */}
+          <h1 className="text-white text-3xl font-bold text-center w-full mb-8">InstantUGC</h1>
           
           {/* Glass morphism tab in center */}
           <div className="glass-morphism rounded-3xl p-8 mb-8 w-full max-w-3xl mx-auto text-center z-20 relative backdrop-blur-lg bg-white/20 border border-white/30 shadow-lg">
