@@ -12,9 +12,60 @@ const Index = () => {
       {/* Hero Section - Full height now */}
       <header className="w-full min-h-screen bg-[hsl(271,100%,70%)] text-white flex items-center">
         <div className="container mx-auto px-4 relative overflow-hidden flex flex-col items-center justify-center">
+          {/* Floating images - reorganized into a more balanced, pleasing pattern */}
+          <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
+            {/* Top row */}
+            <div className="absolute top-[5%] left-[15%] rounded-3xl overflow-hidden w-36 h-36 shadow-lg animate-float delay-100 border-4 border-white">
+              <img 
+                src="/public/lovable-uploads/7e5d2bad-0f45-4daa-b0af-7f94ff2d5de0.png" 
+                alt="UGC sample" 
+                className="w-full h-full object-cover" 
+              />
+            </div>
+            <div className="absolute top-[3%] right-[15%] rounded-3xl overflow-hidden w-44 h-44 shadow-lg animate-float delay-300 border-4 border-white">
+              <img 
+                src="/public/lovable-uploads/c4e747d2-b1db-4f11-bef8-b171f4aa64d4.png" 
+                alt="UGC sample" 
+                className="w-full h-full object-cover" 
+              />
+            </div>
+            
+            {/* Middle row - left & right sides */}
+            <div className="absolute top-[40%] left-[8%] rounded-3xl overflow-hidden w-40 h-40 shadow-lg animate-float delay-200 border-4 border-white z-10">
+              <img 
+                src="/public/lovable-uploads/e2dbf4bd-c5d7-498c-a89e-bcd56a1c439b.png" 
+                alt="UGC sample" 
+                className="w-full h-full object-cover" 
+              />
+            </div>
+            <div className="absolute top-[38%] right-[8%] rounded-3xl overflow-hidden w-36 h-36 shadow-lg animate-float delay-500 border-4 border-white z-10">
+              <img 
+                src="/public/lovable-uploads/03078dbb-8dba-408e-a18f-6bed787e3bb9.png" 
+                alt="UGC sample" 
+                className="w-full h-full object-cover" 
+              />
+            </div>
+            
+            {/* Bottom row */}
+            <div className="absolute bottom-[10%] left-[20%] rounded-3xl overflow-hidden w-40 h-40 shadow-lg animate-float delay-400 border-4 border-white z-10">
+              <img 
+                src="/public/lovable-uploads/03078dbb-8dba-408e-a18f-6bed787e3bb9.png" 
+                alt="UGC sample" 
+                className="w-full h-full object-cover" 
+              />
+            </div>
+            <div className="absolute bottom-[12%] right-[20%] rounded-3xl overflow-hidden w-48 h-48 shadow-lg animate-float delay-200 border-4 border-white z-10">
+              <img 
+                src="/public/lovable-uploads/7e5d2bad-0f45-4daa-b0af-7f94ff2d5de0.png" 
+                alt="UGC sample" 
+                className="w-full h-full object-cover" 
+              />
+            </div>
+          </div>
+
           {/* Glass morphism tab in center with hover effect */}
           <div 
-            className={`glass-morphism rounded-3xl p-8 mb-8 w-full max-w-3xl mx-auto text-center z-20 relative backdrop-blur-lg 
+            className={`glass-morphism rounded-3xl p-8 mb-8 w-full max-w-3xl mx-auto text-center relative backdrop-blur-lg 
             bg-white/20 border ${isHovered ? 'border-white shadow-[0_0_15px_rgba(255,255,255,0.5)] transition-all duration-300' : 'border-white/30 shadow-lg'}`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
@@ -34,57 +85,6 @@ const Index = () => {
                   Create
                 </Button>
               </Link>
-            </div>
-          </div>
-
-          {/* Floating images - reorganized into a more balanced, pleasing pattern */}
-          <div className="absolute inset-0 w-full h-full overflow-hidden">
-            {/* Top row */}
-            <div className="absolute top-[10%] left-[15%] rounded-3xl overflow-hidden w-36 h-36 shadow-lg animate-float delay-100 border-4 border-white">
-              <img 
-                src="/public/lovable-uploads/7e5d2bad-0f45-4daa-b0af-7f94ff2d5de0.png" 
-                alt="UGC sample" 
-                className="w-full h-full object-cover" 
-              />
-            </div>
-            <div className="absolute top-[8%] right-[15%] rounded-3xl overflow-hidden w-44 h-44 shadow-lg animate-float delay-300 border-4 border-white">
-              <img 
-                src="/public/lovable-uploads/c4e747d2-b1db-4f11-bef8-b171f4aa64d4.png" 
-                alt="UGC sample" 
-                className="w-full h-full object-cover" 
-              />
-            </div>
-            
-            {/* Middle row - left & right sides */}
-            <div className="absolute top-[40%] left-[8%] rounded-3xl overflow-hidden w-40 h-40 shadow-lg animate-float delay-200 border-4 border-white">
-              <img 
-                src="/public/lovable-uploads/e2dbf4bd-c5d7-498c-a89e-bcd56a1c439b.png" 
-                alt="UGC sample" 
-                className="w-full h-full object-cover" 
-              />
-            </div>
-            <div className="absolute top-[38%] right-[8%] rounded-3xl overflow-hidden w-36 h-36 shadow-lg animate-float delay-500 border-4 border-white">
-              <img 
-                src="/public/lovable-uploads/03078dbb-8dba-408e-a18f-6bed787e3bb9.png" 
-                alt="UGC sample" 
-                className="w-full h-full object-cover" 
-              />
-            </div>
-            
-            {/* Bottom row */}
-            <div className="absolute bottom-[10%] left-[20%] rounded-3xl overflow-hidden w-40 h-40 shadow-lg animate-float delay-400 border-4 border-white">
-              <img 
-                src="/public/lovable-uploads/03078dbb-8dba-408e-a18f-6bed787e3bb9.png" 
-                alt="UGC sample" 
-                className="w-full h-full object-cover" 
-              />
-            </div>
-            <div className="absolute bottom-[12%] right-[20%] rounded-3xl overflow-hidden w-48 h-48 shadow-lg animate-float delay-200 border-4 border-white">
-              <img 
-                src="/public/lovable-uploads/7e5d2bad-0f45-4daa-b0af-7f94ff2d5de0.png" 
-                alt="UGC sample" 
-                className="w-full h-full object-cover" 
-              />
             </div>
           </div>
         </div>
