@@ -23,6 +23,15 @@ const TemplateSelector = ({
   isLoading = false,
   error = null
 }: TemplateSelectorProps) => {
+  // Hardcoded template as a fallback
+  const hardcodedTemplate = {
+    id: 999,
+    videoUrl: "https://tsflchdtmzqaavrwidoq.supabase.co/storage/v1/object/public/templates/UGC/111da97d-40cb-4a52-9611-adacc0f65d9e.mp4"
+  };
+  
+  // Combined templates array with the hardcoded template
+  const displayTemplates = templates.length > 0 ? templates : [hardcodedTemplate];
+  
   return (
     <div className="bg-gray-100 rounded-lg p-4">
       <h2 className="text-base font-medium mb-3">Select UGC Template</h2>
@@ -42,12 +51,12 @@ const TemplateSelector = ({
               <Skeleton className="w-full h-full" />
             </div>
           ))
-        ) : templates.length === 0 ? (
+        ) : displayTemplates.length === 0 ? (
           <div className="col-span-full py-8 text-center text-gray-500">
             {error ? 'Failed to load templates' : 'No templates available'}
           </div>
         ) : (
-          templates.map((template) => (
+          displayTemplates.map((template) => (
             <div
               key={template.id}
               className={`aspect-square cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${
@@ -61,6 +70,7 @@ const TemplateSelector = ({
                 src={template.videoUrl}
                 className="w-full h-full object-cover"
                 preload="metadata"
+                poster="/placeholder.svg"
                 onError={(e) => console.error(`Error loading video ${template.id}:`, e)}
               />
             </div>

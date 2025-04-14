@@ -45,10 +45,11 @@ const VideoPreview = ({ selectedTemplateId, videoUrl, adText, textPosition, isLo
               controls
               loop
               playsInline
+              poster="/placeholder.svg"
               onError={(e) => {
                 console.error("Error loading video in preview:", e);
               }}
-              onLoad={() => {
+              onLoadedData={() => {
                 console.log("Video loaded successfully in preview");
               }}
             />
