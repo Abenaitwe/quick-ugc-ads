@@ -1,22 +1,39 @@
 
-import React from "react";
+import React, { useRef, useEffect } from "react";
 
 interface VideoPreviewProps {
   selectedTemplateId: number | null;
+  videoUrl?: string;
   adText: string;
   textPosition: "top" | "middle" | "bottom";
 }
 
-const VideoPreview = ({ selectedTemplateId, adText, textPosition }: VideoPreviewProps) => {
+const VideoPreview = ({ selectedTemplateId, videoUrl, adText, textPosition }: VideoPreviewProps) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    // Reset the video when the template changes
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      if (selectedTemplateId) {
+        // Pause the video initially
+        videoRef.current.pause();
+      }
+    }
+  }, [selectedTemplateId]);
+
   return (
     <div className="bg-gray-100 rounded-lg p-4">
       <div className="aspect-[9/16] bg-black rounded-lg overflow-hidden">
-        {selectedTemplateId ? (
+        {selectedTemplateId && videoUrl ? (
           <div className="relative w-full h-full">
-            <img
-              src={`https://source.unsplash.com/random/600x1067?portrait&sig=${selectedTemplateId}`}
-              alt="Video preview"
+            <video
+              ref={videoRef}
+              src={videoUrl}
               className="w-full h-full object-cover"
+              controls
+              loop
+              playsInline
             />
             {adText && (
               <div className={`absolute left-1/2 -translate-x-1/2 w-full px-4 text-center

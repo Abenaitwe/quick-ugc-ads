@@ -3,7 +3,8 @@ import React from "react";
 
 interface Template {
   id: number;
-  imageUrl: string;
+  videoUrl: string;
+  thumbnailUrl?: string;
 }
 
 interface TemplateSelectorProps {
@@ -27,12 +28,21 @@ const TemplateSelector = ({ templates, selectedTemplateId, handleTemplateSelect 
             }`}
             onClick={() => handleTemplateSelect(template.id)}
           >
-            <img
-              src={template.imageUrl}
-              alt={`Template ${template.id}`}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
+            {/* Show thumbnail if available, otherwise use the first frame of the video */}
+            {template.thumbnailUrl ? (
+              <img
+                src={template.thumbnailUrl}
+                alt={`Template ${template.id}`}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            ) : (
+              <video
+                src={template.videoUrl}
+                className="w-full h-full object-cover"
+                preload="metadata"
+              />
+            )}
           </div>
         ))}
       </div>

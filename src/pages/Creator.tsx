@@ -10,9 +10,11 @@ import VideoPreview from "@/components/creator/VideoPreview";
 import MusicSelector from "@/components/creator/MusicSelector";
 import GenerateButton from "@/components/creator/GenerateButton";
 
+// Update the template interface to include videoUrl
 interface Template {
   id: number;
-  imageUrl: string;
+  videoUrl: string;
+  thumbnailUrl?: string;
 }
 
 const Creator = () => {
@@ -25,10 +27,12 @@ const Creator = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
 
-  // Generate some sample templates - we'll replace these with actual templates later
-  const templates = Array.from({ length: 20 }, (_, i) => ({
+  // Generate some sample video templates - we'll replace these with actual video templates later
+  const templates: Template[] = Array.from({ length: 12 }, (_, i) => ({
     id: i + 1,
-    imageUrl: `https://source.unsplash.com/random/300x300?portrait&sig=${i+1}`,
+    videoUrl: `https://assets.mixkit.co/videos/preview/mixkit-person-typing-on-a-laptop-keyboard-${(i % 5) + 1}.mp4`,
+    // Optional: provide a thumbnail if you want to show a static image instead of the video in the selector
+    thumbnailUrl: `https://source.unsplash.com/random/300x300?person&sig=${i+1}`,
   }));
 
   const handleTemplateSelect = (id: number) => {
@@ -41,6 +45,13 @@ const Creator = () => {
 
   const handleGenerateVideo = () => {
     alert("Video generation would start here");
+  };
+
+  // Get the selected video URL based on template ID
+  const getSelectedVideoUrl = () => {
+    if (!selectedTemplateId) return undefined;
+    const template = templates.find(t => t.id === selectedTemplateId);
+    return template ? template.videoUrl : undefined;
   };
 
   // If still loading, show a spinner
@@ -80,6 +91,7 @@ const Creator = () => {
           <div className="col-span-12 lg:col-span-8 space-y-4">
             <VideoPreview 
               selectedTemplateId={selectedTemplateId}
+              videoUrl={getSelectedVideoUrl()}
               adText={adText}
               textPosition={textPosition}
             />
