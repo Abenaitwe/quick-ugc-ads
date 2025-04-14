@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface VideoPreviewProps {
@@ -12,8 +12,16 @@ interface VideoPreviewProps {
 
 const VideoPreview = ({ selectedTemplateId, videoUrl, adText, textPosition, isLoading = false }: VideoPreviewProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
 
   useEffect(() => {
+    // Reset video state when template changes
+    if (videoUrl) {
+      setVideoLoaded(false);
+      setVideoError(false);
+    }
+    
     // Reset the video when the template changes
     if (videoRef.current) {
       videoRef.current.currentTime = 0;
@@ -22,11 +30,18 @@ const VideoPreview = ({ selectedTemplateId, videoUrl, adText, textPosition, isLo
         videoRef.current.pause();
       }
     }
-  }, [selectedTemplateId]);
+  }, [selectedTemplateId, videoUrl]);
 
   // Log when the video URL changes to help debug
   useEffect(() => {
     console.log("VideoPreview - videoUrl changed:", videoUrl);
+    if (videoUrl) {
+      // Check if URL is valid by creating a test image
+      const testImg = new Image();
+      testImg.onload = () => console.log("URL appears to be valid");
+      testImg.onerror = () => console.log("URL appears to be invalid");
+      testImg.src = videoUrl;
+    }
   }, [videoUrl]);
 
   return (
@@ -38,6 +53,11 @@ const VideoPreview = ({ selectedTemplateId, videoUrl, adText, textPosition, isLo
           </div>
         ) : selectedTemplateId && videoUrl ? (
           <div className="relative w-full h-full">
+            {!videoLoaded && !videoError && (
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-10">
+                <div className="h-8 w-8 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
+              </div>
+            )}
             <video
               ref={videoRef}
               src={videoUrl}
@@ -48,12 +68,19 @@ const VideoPreview = ({ selectedTemplateId, videoUrl, adText, textPosition, isLo
               poster="/placeholder.svg"
               onError={(e) => {
                 console.error("Error loading video in preview:", e);
+                setVideoError(true);
               }}
               onLoadedData={() => {
                 console.log("Video loaded successfully in preview");
+                setVideoLoaded(true);
               }}
             />
-            {adText && (
+            {videoError && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-70 text-white">
+                <p>Error loading video</p>
+              </div>
+            )}
+            {adText && videoLoaded && (
               <div className={`absolute left-1/2 -translate-x-1/2 w-full px-4 text-center
                 ${textPosition === 'top' ? 'top-16' : 
                   textPosition === 'middle' ? 'top-1/2 -translate-y-1/2' : 'bottom-16'}`}>
