@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Image } from "lucide-react";
+import { Video } from "lucide-react";
 
 interface GenerateButtonProps {
   onClick: () => void;
@@ -13,7 +13,7 @@ const GenerateButton = ({ onClick }: GenerateButtonProps) => {
       className="w-full py-4 bg-green-500 hover:bg-green-600 text-white font-medium text-base"
       onClick={onClick}
     >
-      <Image className="h-5 w-5 mr-2" /> Generate Video
+      <Video className="h-5 w-5 mr-2" /> Generate Video
     </Button>
   );
 };

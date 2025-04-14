@@ -3,6 +3,7 @@ import React from "react";
 import { Sparkle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import TextPositionControl from "./TextPositionControl";
 
 interface TextEditorProps {
   adText: string;
@@ -28,26 +29,10 @@ const TextEditor = ({ adText, setAdText, textPosition, handleTextPositionChange 
         onChange={(e) => setAdText(e.target.value)}
       />
       
-      <div className="flex justify-between items-center">
-        <button 
-          className={`px-4 py-1.5 rounded-md text-sm ${textPosition === 'top' ? 'bg-gray-200' : 'bg-transparent'}`}
-          onClick={() => handleTextPositionChange('top')}
-        >
-          Top
-        </button>
-        <button 
-          className={`px-4 py-1.5 rounded-md text-sm ${textPosition === 'middle' ? 'bg-green-400 text-white' : 'bg-transparent'}`}
-          onClick={() => handleTextPositionChange('middle')}
-        >
-          Middle
-        </button>
-        <button 
-          className={`px-4 py-1.5 rounded-md text-sm ${textPosition === 'bottom' ? 'bg-gray-200' : 'bg-transparent'}`}
-          onClick={() => handleTextPositionChange('bottom')}
-        >
-          Bottom
-        </button>
-      </div>
+      <TextPositionControl 
+        textPosition={textPosition}
+        handleTextPositionChange={handleTextPositionChange}
+      />
     </div>
   );
 };
