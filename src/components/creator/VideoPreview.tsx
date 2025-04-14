@@ -1,14 +1,16 @@
 
 import React, { useRef, useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface VideoPreviewProps {
   selectedTemplateId: number | null;
   videoUrl?: string;
   adText: string;
   textPosition: "top" | "middle" | "bottom";
+  isLoading?: boolean;
 }
 
-const VideoPreview = ({ selectedTemplateId, videoUrl, adText, textPosition }: VideoPreviewProps) => {
+const VideoPreview = ({ selectedTemplateId, videoUrl, adText, textPosition, isLoading = false }: VideoPreviewProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -22,10 +24,19 @@ const VideoPreview = ({ selectedTemplateId, videoUrl, adText, textPosition }: Vi
     }
   }, [selectedTemplateId]);
 
+  // Log when the video URL changes to help debug
+  useEffect(() => {
+    console.log("VideoPreview - videoUrl changed:", videoUrl);
+  }, [videoUrl]);
+
   return (
     <div className="bg-gray-100 rounded-lg p-4">
       <div className="aspect-[9/16] bg-black rounded-lg overflow-hidden">
-        {selectedTemplateId && videoUrl ? (
+        {isLoading ? (
+          <div className="w-full h-full flex items-center justify-center">
+            <Skeleton className="w-full h-full" />
+          </div>
+        ) : selectedTemplateId && videoUrl ? (
           <div className="relative w-full h-full">
             <video
               ref={videoRef}
@@ -34,6 +45,12 @@ const VideoPreview = ({ selectedTemplateId, videoUrl, adText, textPosition }: Vi
               controls
               loop
               playsInline
+              onError={(e) => {
+                console.error("Error loading video in preview:", e);
+              }}
+              onLoad={() => {
+                console.log("Video loaded successfully in preview");
+              }}
             />
             {adText && (
               <div className={`absolute left-1/2 -translate-x-1/2 w-full px-4 text-center
@@ -47,7 +64,7 @@ const VideoPreview = ({ selectedTemplateId, videoUrl, adText, textPosition }: Vi
           </div>
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-500">
-            <p>Select a template to preview</p>
+            <p>{videoUrl ? "Error loading video" : "Select a template to preview"}</p>
           </div>
         )}
       </div>
