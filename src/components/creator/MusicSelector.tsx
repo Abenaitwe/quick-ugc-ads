@@ -1,5 +1,5 @@
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { Info } from "lucide-react";
 import MusicUploadArea from "./music/MusicUploadArea";
 import MusicPlayerControls from "./music/MusicPlayerControls";
@@ -48,7 +48,7 @@ const MusicSelector = ({
       setIsPlaying(false);
     }
   };
-
+  
   return (
     <div className="space-y-2">
       <div className="flex items-center">
@@ -67,9 +67,15 @@ const MusicSelector = ({
             onPlayPause={handlePlayPause}
             audioRef={audioRef}
           />
+          
+          <audio 
+            ref={audioRef}
+            onTimeUpdate={handleTimeUpdate}
+            style={{ display: 'none' }}
+          />
         </div>
       ) : (
-        <MusicUploadArea />
+        <MusicUploadArea setSelectedMusic={setSelectedMusic} />
       )}
     </div>
   );

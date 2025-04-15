@@ -1,5 +1,5 @@
 
-import React, { useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Volume2 } from "lucide-react";
 
 interface MusicPlayerControlsProps {
@@ -9,6 +9,39 @@ interface MusicPlayerControlsProps {
 }
 
 const MusicPlayerControls = ({ isPlaying, onPlayPause, audioRef }: MusicPlayerControlsProps) => {
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  
+  useEffect(() => {
+    const audio = audioRef.current;
+    
+    if (audio) {
+      const handleLoadedMetadata = () => {
+        setDuration(audio.duration);
+      };
+      
+      const handleTimeUpdate = () => {
+        setCurrentTime(audio.currentTime);
+      };
+      
+      audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.addEventListener('timeupdate', handleTimeUpdate);
+      
+      return () => {
+        audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        audio.removeEventListener('timeupdate', handleTimeUpdate);
+      };
+    }
+  }, [audioRef]);
+  
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+  };
+  
+  const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
+  
   return (
     <div className="bg-gray-100 rounded-lg p-2 flex items-center space-x-3">
       <button 
@@ -22,19 +55,17 @@ const MusicPlayerControls = ({ isPlaying, onPlayPause, audioRef }: MusicPlayerCo
         )}
       </button>
       <div className="text-xs text-gray-600">
-        0:00 / 0:30
+        {formatTime(currentTime)} / {formatTime(duration || 0)}
       </div>
       <div className="h-1 bg-gray-300 flex-1 rounded-full">
-        <div className="h-full w-0 bg-gray-600 rounded-full"></div>
+        <div 
+          className="h-full bg-gray-600 rounded-full transition-all" 
+          style={{ width: `${progressPercentage}%` }}
+        ></div>
       </div>
       <button className="text-gray-600">
         <Volume2 className="h-4 w-4" />
       </button>
-      
-      <audio 
-        ref={audioRef}
-        style={{ display: 'none' }}
-      />
     </div>
   );
 };
