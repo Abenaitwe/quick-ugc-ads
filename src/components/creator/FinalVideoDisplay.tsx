@@ -1,6 +1,6 @@
 
-import React, { useEffect, useRef } from "react";
-import { Download } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { Download, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -11,6 +11,8 @@ interface FinalVideoDisplayProps {
 
 const FinalVideoDisplay = ({ videoUrl, onClose }: FinalVideoDisplayProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     // Log the video URL to help with debugging
@@ -20,20 +22,67 @@ const FinalVideoDisplay = ({ videoUrl, onClose }: FinalVideoDisplayProps) => {
     if (videoRef.current) {
       videoRef.current.load();
     }
+    
+    // Cleanup function
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
+    };
   }, [videoUrl]);
 
   const handleDownload = () => {
-    const link = document.createElement("a");
-    link.href = videoUrl;
-    link.download = `generated-video-${Date.now()}.mp4`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+      console.log("Starting download of video from URL:", videoUrl);
+      
+      // Using fetch to ensure we get the full video data
+      fetch(videoUrl)
+        .then(response => response.blob())
+        .then(blob => {
+          // Create a download link
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = `generated-video-${Date.now()}.mp4`;
+          document.body.appendChild(link);
+          link.click();
+          
+          // Clean up
+          setTimeout(() => {
+            URL.revokeObjectURL(link.href);
+            document.body.removeChild(link);
+          }, 100);
+          
+          toast.success("Download started");
+        })
+        .catch(err => {
+          console.error("Error downloading video:", err);
+          toast.error("Failed to download video");
+        });
+    } catch (error) {
+      console.error("Error in download handler:", error);
+      toast.error("Download failed");
+    }
   };
 
   const handleVideoError = () => {
     console.error("Error loading final video from URL:", videoUrl);
+    setHasError(true);
+    setIsLoading(false);
     toast.error("There was a problem loading the video");
+  };
+  
+  const handleVideoLoaded = () => {
+    console.log("Video loaded successfully");
+    setIsLoading(false);
+    setHasError(false);
+  };
+  
+  const handleRetry = () => {
+    setIsLoading(true);
+    setHasError(false);
+    if (videoRef.current) {
+      videoRef.current.load();
+    }
   };
 
   return (
@@ -44,6 +93,26 @@ const FinalVideoDisplay = ({ videoUrl, onClose }: FinalVideoDisplayProps) => {
         </div>
         
         <div className="aspect-[9/16] bg-black relative flex items-center justify-center">
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-10">
+              <div className="h-8 w-8 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
+            </div>
+          )}
+          
+          {hasError && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-70 text-white p-4 text-center z-20">
+              <AlertCircle className="w-8 h-8 mb-2 text-red-400" />
+              <p className="text-lg font-medium">Error loading video</p>
+              <p className="text-sm text-gray-300 mt-1">The video could not be loaded</p>
+              <Button 
+                className="mt-4 bg-green-600 hover:bg-green-700"
+                onClick={handleRetry}
+              >
+                Try Again
+              </Button>
+            </div>
+          )}
+          
           <video
             ref={videoRef}
             src={videoUrl}
@@ -52,6 +121,7 @@ const FinalVideoDisplay = ({ videoUrl, onClose }: FinalVideoDisplayProps) => {
             autoPlay
             loop
             onError={handleVideoError}
+            onLoadedData={handleVideoLoaded}
           />
         </div>
         
@@ -59,7 +129,11 @@ const FinalVideoDisplay = ({ videoUrl, onClose }: FinalVideoDisplayProps) => {
           <Button variant="outline" onClick={onClose}>
             Close
           </Button>
-          <Button onClick={handleDownload} className="bg-green-600 hover:bg-green-500">
+          <Button 
+            onClick={handleDownload} 
+            className="bg-green-600 hover:bg-green-500"
+            disabled={isLoading || hasError}
+          >
             <Download className="h-4 w-4 mr-2" /> Download Video
           </Button>
         </div>
