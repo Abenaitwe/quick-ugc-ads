@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Play } from "lucide-react";
@@ -44,11 +43,7 @@ const TemplateSelector = ({
   return (
     <div className="bg-gray-100 rounded-lg p-4">
       <h2 className="text-base font-medium mb-3">Select UGC Template</h2>
-      {error && (
-        <div className="bg-red-100 text-red-700 p-3 rounded-lg mb-3 text-sm">
-          {error}
-        </div>
-      )}
+      
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
         {isLoading ? (
           Array.from({ length: 8 }).map((_, index) => (
