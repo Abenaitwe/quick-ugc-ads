@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState } from "react";
 
 interface CTAVideo {
@@ -22,6 +23,10 @@ interface CreatorContextType {
   setCurrentTime: (time: number) => void;
   ctaVideo: CTAVideo | null;
   setCtaVideo: (video: CTAVideo | null) => void;
+  generatedVideoUrl: string | null;
+  setGeneratedVideoUrl: (url: string | null) => void;
+  isGeneratingVideo: boolean;
+  setIsGeneratingVideo: (isGenerating: boolean) => void;
 }
 
 const CreatorContext = createContext<CreatorContextType | null>(null);
@@ -42,6 +47,8 @@ export const CreatorProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [ctaVideo, setCtaVideo] = useState<CTAVideo | null>(null);
+  const [generatedVideoUrl, setGeneratedVideoUrl] = useState<string | null>(null);
+  const [isGeneratingVideo, setIsGeneratingVideo] = useState(false);
 
   return (
     <CreatorContext.Provider
@@ -60,6 +67,10 @@ export const CreatorProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setCurrentTime,
         ctaVideo,
         setCtaVideo,
+        generatedVideoUrl,
+        setGeneratedVideoUrl,
+        isGeneratingVideo,
+        setIsGeneratingVideo,
       }}
     >
       {children}
