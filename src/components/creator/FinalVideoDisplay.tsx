@@ -126,13 +126,13 @@ const FinalVideoDisplay = ({ videoUrl, onClose }: FinalVideoDisplayProps) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-2xl w-full overflow-hidden">
+    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4 overflow-y-auto">
+      <div className="bg-white rounded-lg max-w-md w-full mx-auto overflow-hidden">
         <div className="p-4 border-b">
           <h2 className="text-xl font-medium">Generated Video</h2>
         </div>
         
-        <div className="aspect-[9/16] bg-black relative flex items-center justify-center">
+        <div className="relative bg-black flex items-center justify-center">
           {isLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-10">
               <div className="h-8 w-8 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
@@ -153,11 +153,11 @@ const FinalVideoDisplay = ({ videoUrl, onClose }: FinalVideoDisplayProps) => {
             </div>
           )}
           
-          <div className="relative w-full h-full">
+          <div className="video-container w-full" style={{ maxHeight: "70vh" }}>
             <video
               ref={videoRef}
               src={videoUrl}
-              className="max-h-full max-w-full object-contain"
+              className="w-full h-auto"
               controls
               autoPlay
               loop

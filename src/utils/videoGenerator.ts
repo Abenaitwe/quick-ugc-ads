@@ -21,10 +21,17 @@ export const generateVideo = async (options: VideoGenerationOptions): Promise<st
     const toastId = toast.loading("Processing video...");
     
     console.log("Starting video generation process with options:", options);
+    console.log("Including CTA video:", ctaVideoUrl ? "Yes" : "No");
 
     // Call our Supabase Edge Function to process the video
     const { data: processedVideo, error } = await supabase.functions.invoke("process-video", {
-      body: { templateVideoUrl, ctaVideoUrl, adText, textPosition },
+      body: { 
+        templateVideoUrl, 
+        ctaVideoUrl, 
+        adText, 
+        textPosition,
+        includeOverlayInFinal: true  // Make sure text is included in downloaded file
+      },
     });
 
     if (error) {
