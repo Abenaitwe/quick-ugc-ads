@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle } from "lucide-react";
@@ -96,7 +97,7 @@ const VideoPreview = ({
 
   return (
     <div className="bg-gray-100 rounded-lg p-4">
-      <div className="aspect-[9/16] bg-black rounded-lg overflow-hidden relative">
+      <div className="aspect-[9/16] bg-black rounded-lg overflow-hidden relative flex items-center justify-center">
         {isLoading ? (
           <div className="w-full h-full flex items-center justify-center">
             <Skeleton className="w-full h-full" />
@@ -110,7 +111,7 @@ const VideoPreview = ({
             <p>No video URL available</p>
           </div>
         ) : (
-          <div className="relative w-full h-full" onClick={handleVideoClick}>
+          <div className="relative w-full h-full flex items-center justify-center" onClick={handleVideoClick}>
             {!videoLoaded && !error && (
               <div className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-10">
                 <div className="h-8 w-8 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
@@ -120,7 +121,7 @@ const VideoPreview = ({
             <video
               ref={videoRef}
               src={videoUrl}
-              className="w-full h-full object-cover"
+              className="max-h-full max-w-full h-auto w-auto object-contain"
               controls={videoLoaded}
               loop
               playsInline
