@@ -14,11 +14,21 @@ const GenerateButton = ({
   onClick,
   disabled = false
 }: GenerateButtonProps) => {
-  const { isGeneratingVideo } = useCreator();
+  const { isGeneratingVideo, selectedTemplateId } = useCreator();
+  
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!selectedTemplateId) {
+      toast.error("Please select a template first");
+      return;
+    }
+    
+    // Only call the onClick handler if we have a template selected
+    onClick();
+  };
   
   return (
     <Button 
-      onClick={onClick} 
+      onClick={handleClick} 
       className="w-full py-4 text-white font-medium text-base bg-violet-500 hover:bg-violet-400"
       disabled={disabled || isGeneratingVideo}
     >

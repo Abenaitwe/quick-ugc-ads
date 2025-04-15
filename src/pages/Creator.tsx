@@ -25,7 +25,21 @@ const CreatorContent = () => {
   } = useCreator();
 
   // Get the selected template video URL
-  const selectedTemplate = templates.find(t => t.id === selectedTemplateId);
+  const getSelectedTemplateUrl = () => {
+    // Find the template with the matching ID from the templates array
+    const selectedTemplate = templates.find(t => t.id === selectedTemplateId);
+    
+    if (selectedTemplate) {
+      return selectedTemplate.videoUrl;
+    }
+    
+    // If not found in the templates array, check for hardcoded template
+    if (selectedTemplateId === 999) {
+      return "https://tsflchdtmzqaavrwidoq.supabase.co/storage/v1/object/public/templates/UGC/111da97d-40cb-4a52-9611-adacc0f65d9e.mp4";
+    }
+    
+    return null;
+  };
 
   const handleGenerateVideo = async () => {
     if (!selectedTemplateId) {
@@ -33,13 +47,20 @@ const CreatorContent = () => {
       return;
     }
 
+    const templateUrl = getSelectedTemplateUrl();
+    
+    if (!templateUrl) {
+      toast.error("Template video not found");
+      return;
+    }
+
     // Set generating state to true
     setIsGeneratingVideo(true);
     
     try {
-      // Call the video generation utility
+      // Call the video generation utility with the selected template URL
       const finalVideoUrl = await generateVideo({
-        templateVideoUrl: selectedTemplate?.videoUrl,
+        templateVideoUrl: templateUrl,
         ctaVideoUrl: ctaVideo?.url,
         adText,
         textPosition,
@@ -47,6 +68,7 @@ const CreatorContent = () => {
       
       if (finalVideoUrl) {
         setGeneratedVideoUrl(finalVideoUrl);
+        toast.success("Video successfully generated!");
       }
     } catch (error) {
       console.error("Error in video generation:", error);
@@ -64,7 +86,8 @@ const CreatorContent = () => {
     setGeneratedVideoUrl(null);
   };
 
-  const generateButtonDisabled = !selectedTemplateId || isLoadingTemplates;
+  // Only disable the button if templates are still loading
+  const generateButtonDisabled = isLoadingTemplates;
 
   return (
     <CreatorLayout>
