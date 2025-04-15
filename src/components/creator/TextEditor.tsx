@@ -24,7 +24,7 @@ const TextEditor = ({ adText, setAdText, textPosition, handleTextPositionChange 
       
       <Textarea 
         className="w-full h-20 p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none mb-3 text-sm"
-        placeholder="Your taste....."
+        placeholder=""
         value={adText}
         onChange={(e) => setAdText(e.target.value)}
       />

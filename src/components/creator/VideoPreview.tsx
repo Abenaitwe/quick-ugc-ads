@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle } from "lucide-react";
@@ -25,7 +24,6 @@ const VideoPreview = ({
   const [localError, setLocalError] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  // Reset video state when URL changes
   useEffect(() => {
     console.log("VideoPreview received videoUrl:", videoUrl);
     
@@ -34,13 +32,11 @@ const VideoPreview = ({
     
     if (!videoUrl) return;
     
-    // Force video element to reload with new source
     if (videoRef.current) {
       videoRef.current.load();
     }
   }, [videoUrl]);
 
-  // Handle video playback when template changes
   useEffect(() => {
     if (!videoRef.current || !videoUrl) return;
     
@@ -49,7 +45,6 @@ const VideoPreview = ({
     const handleCanPlay = () => {
       console.log("Video can play now");
       setVideoLoaded(true);
-      // Only autoplay if not on mobile (to avoid mobile restrictions)
       if (!window.matchMedia("(max-width: 768px)").matches) {
         videoElement.play()
           .then(() => {
@@ -69,11 +64,9 @@ const VideoPreview = ({
       setVideoLoaded(false);
     };
     
-    // Add event listeners
     videoElement.addEventListener("canplay", handleCanPlay);
     videoElement.addEventListener("error", handleError);
     
-    // Cleanup
     return () => {
       videoElement.removeEventListener("canplay", handleCanPlay);
       videoElement.removeEventListener("error", handleError);
@@ -99,7 +92,6 @@ const VideoPreview = ({
     }
   };
 
-  // Display a specific error if we have one
   const error = videoError || localError;
 
   return (
@@ -133,7 +125,7 @@ const VideoPreview = ({
               loop
               playsInline
               poster="/placeholder.svg"
-              muted // Add muted to help with autoplay restrictions
+              muted
             />
             
             {error && (
@@ -160,7 +152,7 @@ const VideoPreview = ({
               <div className={`absolute left-1/2 -translate-x-1/2 w-full px-4 text-center
                 ${textPosition === 'top' ? 'top-16' : 
                   textPosition === 'middle' ? 'top-1/2 -translate-y-1/2' : 'bottom-16'}`}>
-                <span className="backdrop-blur-sm px-4 py-2 rounded-lg text-white text-base font-medium">
+                <span className="backdrop-blur-sm px-4 py-2 rounded-lg text-white text-2xl font-bold">
                   {adText}
                 </span>
               </div>
