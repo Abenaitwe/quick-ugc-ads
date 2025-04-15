@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState } from "react";
 
 interface CTAVideo {
@@ -39,7 +38,7 @@ export const CreatorProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [adText, setAdText] = useState("Your taste.....");
   const [textPosition, setTextPosition] = useState<"top" | "middle" | "bottom">("middle");
   const [selectedTemplateId, setSelectedTemplateId] = useState<number | null>(null);
-  const [selectedMusic, setSelectedMusic] = useState<string | null>("Minecraft 1");
+  const [selectedMusic, setSelectedMusic] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [ctaVideo, setCtaVideo] = useState<CTAVideo | null>(null);

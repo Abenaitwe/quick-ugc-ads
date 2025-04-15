@@ -1,6 +1,5 @@
 
 import React, { useRef } from "react";
-import { Button } from "@/components/ui/button";
 import { Info } from "lucide-react";
 import MusicUploadArea from "./music/MusicUploadArea";
 import MusicPlayerControls from "./music/MusicPlayerControls";
@@ -24,10 +23,6 @@ const MusicSelector = ({
   setCurrentTime
 }: MusicSelectorProps) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  const handleMusicSelect = () => {
-    setSelectedMusic("Minecraft 1");
-  };
 
   const handlePlayPause = () => {
     if (audioRef.current) {
@@ -56,14 +51,9 @@ const MusicSelector = ({
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1">
-          <h2 className="text-base font-medium">Upload Music</h2>
-          <Info className="h-4 w-4 text-gray-400" />
-        </div>
-        <Button variant="outline" size="sm" className="border border-gray-300 text-gray-700 text-xs">
-          Free Tracks
-        </Button>
+      <div className="flex items-center">
+        <h2 className="text-base font-medium">Upload Music</h2>
+        <Info className="h-4 w-4 text-gray-400 ml-1" />
       </div>
       
       {selectedMusic ? (
