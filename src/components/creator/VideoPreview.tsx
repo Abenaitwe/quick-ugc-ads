@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle } from "lucide-react";
@@ -97,7 +96,7 @@ const VideoPreview = ({
 
   return (
     <div className="bg-gray-100 rounded-lg p-4">
-      <div className="aspect-[9/16] bg-black rounded-lg overflow-hidden relative flex items-center justify-center">
+      <div className="aspect-[9/16] bg-black rounded-lg overflow-hidden relative">
         {isLoading ? (
           <div className="w-full h-full flex items-center justify-center">
             <Skeleton className="w-full h-full" />
@@ -118,16 +117,18 @@ const VideoPreview = ({
               </div>
             )}
             
-            <video
-              ref={videoRef}
-              src={videoUrl}
-              className="max-h-full max-w-full h-auto w-auto object-contain"
-              controls={videoLoaded}
-              loop
-              playsInline
-              poster="/placeholder.svg"
-              muted
-            />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <video
+                ref={videoRef}
+                src={videoUrl}
+                className="h-full w-full object-contain"
+                controls={videoLoaded}
+                loop
+                playsInline
+                poster="/placeholder.svg"
+                muted
+              />
+            </div>
             
             {error && (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-70 text-white p-4 text-center">
@@ -150,10 +151,12 @@ const VideoPreview = ({
             )}
             
             {adText && videoLoaded && (
-              <div className={`absolute left-1/2 -translate-x-1/2 w-full px-4 text-center
-                ${textPosition === 'top' ? 'top-16' : 
-                  textPosition === 'middle' ? 'top-1/2 -translate-y-1/2' : 'bottom-16'}`}>
-                <span className="backdrop-blur-sm px-4 py-2 rounded-lg text-white text-2xl font-bold">
+              <div 
+                className={`absolute left-1/2 -translate-x-1/2 w-full px-4 text-center z-10
+                  ${textPosition === 'top' ? 'top-16' : 
+                    textPosition === 'middle' ? 'top-1/2 -translate-y-1/2' : 'bottom-16'}`}
+              >
+                <span className="inline-block backdrop-blur-sm bg-black/30 px-4 py-2 rounded-lg text-white text-2xl font-bold shadow-lg">
                   {adText}
                 </span>
               </div>
