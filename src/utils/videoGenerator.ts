@@ -1,4 +1,3 @@
-
 import { toast } from "sonner";
 
 interface VideoGenerationOptions {
@@ -37,16 +36,24 @@ export const generateVideo = async (options: VideoGenerationOptions): Promise<st
       if (ctaVideoBlob) {
         console.log("Merging template and CTA videos...");
         const finalVideo = await mergeVideos(videoWithText, ctaVideoBlob);
+        
+        // Create a URL from the blob and return it
+        const finalVideoUrl = URL.createObjectURL(finalVideo);
+        console.log("Generated final video URL:", finalVideoUrl);
+        
         toast.success("Video generated successfully!", { id: toastId });
-        return URL.createObjectURL(finalVideo);
+        return finalVideoUrl;
       } else {
         console.warn("Failed to load CTA video, using template video only");
       }
     }
     
     // If no CTA video or CTA loading failed, return the template video with text
+    const finalUrl = URL.createObjectURL(videoWithText);
+    console.log("Generated template-only video URL:", finalUrl);
+    
     toast.success("Video generated successfully!", { id: toastId });
-    return URL.createObjectURL(videoWithText);
+    return finalUrl;
     
   } catch (error) {
     console.error("Error generating video:", error);

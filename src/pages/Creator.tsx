@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { toast } from "sonner";
 import CreatorLayout from "@/components/creator/CreatorLayout";
 import EditorSection from "@/components/creator/EditorSection";
@@ -76,8 +76,11 @@ const CreatorContent = () => {
       });
       
       if (finalVideoUrl) {
+        console.log("Setting generated video URL:", finalVideoUrl);
         setGeneratedVideoUrl(finalVideoUrl);
         toast.success("Video successfully generated!");
+      } else {
+        toast.error("Failed to generate video");
       }
     } catch (error) {
       console.error("Error in video generation:", error);
@@ -88,6 +91,8 @@ const CreatorContent = () => {
   };
 
   const handleCloseVideoModal = () => {
+    console.log("Closing video modal and revoking URL:", generatedVideoUrl);
+    
     // Revoke the object URL to free up memory
     if (generatedVideoUrl) {
       URL.revokeObjectURL(generatedVideoUrl);
@@ -97,6 +102,13 @@ const CreatorContent = () => {
 
   // Only disable the button if templates are still loading
   const generateButtonDisabled = isLoadingTemplates;
+
+  // Log when generated video URL changes
+  useEffect(() => {
+    if (generatedVideoUrl) {
+      console.log("Generated video URL updated:", generatedVideoUrl);
+    }
+  }, [generatedVideoUrl]);
 
   return (
     <CreatorLayout>
