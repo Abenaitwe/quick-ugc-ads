@@ -1,5 +1,6 @@
 
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 interface VideoGenerationOptions {
   templateVideoUrl: string | undefined;
@@ -19,36 +20,43 @@ export const generateVideo = async (options: VideoGenerationOptions): Promise<st
   try {
     const toastId = toast.loading("Processing video...");
     
-    // Fetch the template video
-    const templateVideoBlob = await fetchVideo(templateVideoUrl);
-    if (!templateVideoBlob) {
-      toast.error("Failed to load template video", { id: toastId });
+    console.log("Starting video generation process with options:", options);
+
+    // Call our Supabase Edge Function to process the video
+    const { data: processedVideo, error } = await supabase.functions.invoke("process-video", {
+      body: { templateVideoUrl, ctaVideoUrl, adText, textPosition },
+    });
+
+    if (error) {
+      console.error("Error from process-video function:", error);
+      toast.error("Failed to process video", { id: toastId });
       return null;
     }
+
+    console.log("Received processed video data:", processedVideo);
+
+    // Get the video URL from the response
+    const { videoUrl } = processedVideo;
     
-    // Add text overlay to the template video
-    const videoWithText = await addTextOverlay(templateVideoBlob, adText, textPosition);
-    
-    // If there's a CTA video, fetch and append it
-    let finalVideoBlob = videoWithText;
-    if (ctaVideoUrl) {
-      console.log("Fetching CTA video...");
-      const ctaVideoBlob = await fetchVideo(ctaVideoUrl);
-      
-      if (ctaVideoBlob) {
-        console.log("Merging template and CTA videos...");
-        finalVideoBlob = await mergeVideos(videoWithText, ctaVideoBlob);
-      } else {
-        console.warn("Failed to load CTA video, using template video only");
-      }
+    if (!videoUrl) {
+      console.error("No video URL in response");
+      toast.error("Failed to generate video", { id: toastId });
+      return null;
     }
-    
-    // Create a URL from the blob and return it
-    const finalVideoUrl = URL.createObjectURL(new Blob([finalVideoBlob], { type: 'video/mp4' }));
-    console.log("Generated final video URL:", finalVideoUrl);
+
+    // Create a VideoDisplay object that includes both the video URL and overlay metadata
+    const videoDisplay = {
+      url: videoUrl,
+      adText,
+      textPosition,
+      hasCta: !!ctaVideoUrl,
+    };
+
+    // Store this in sessionStorage for persistence
+    sessionStorage.setItem("processedVideoData", JSON.stringify(videoDisplay));
     
     toast.success("Video generated successfully!", { id: toastId });
-    return finalVideoUrl;
+    return videoUrl;
     
   } catch (error) {
     console.error("Error generating video:", error);
@@ -57,6 +65,8 @@ export const generateVideo = async (options: VideoGenerationOptions): Promise<st
   }
 };
 
+// These functions remain in client code for preview functionality,
+// but the actual processing happens on the server
 const fetchVideo = async (url: string): Promise<Blob | null> => {
   try {
     const response = await fetch(url);
@@ -71,27 +81,11 @@ const fetchVideo = async (url: string): Promise<Blob | null> => {
 };
 
 const addTextOverlay = async (videoBlob: Blob, text: string, position: "top" | "middle" | "bottom"): Promise<Blob> => {
-  console.log("Adding text overlay:", text, "at position:", position);
-  
-  // With browser limitations, we can't actually modify the video content
-  // But we're returning the original blob to maintain the expected API
-  // The text overlay is handled at display time in the VideoPreview component
+  console.log("Client-side text overlay preview:", text, "at position:", position);
   return videoBlob;
 };
 
 const mergeVideos = async (video1: Blob, video2: Blob): Promise<Blob> => {
-  console.log("Attempting to merge videos");
-  
-  try {
-    // In a real implementation, video merging would require a backend service or Web Assembly
-    // For this client-side demo, we'll implement a simple concatenation approach
-    // by creating a new blob that contains both original blobs
-    
-    const mergedBlob = new Blob([video1, video2], { type: 'video/mp4' });
-    console.log("Created merged blob of size:", mergedBlob.size);
-    return mergedBlob;
-  } catch (error) {
-    console.error("Error in video merging:", error);
-    return video1; // Return first video if merging fails
-  }
+  console.log("Client-side video merging preview");
+  return video1;
 };

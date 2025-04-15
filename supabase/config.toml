@@ -1,1 +1,5 @@
+
 project_id = "tsflchdtmzqaavrwidoq"
+
+[functions.process-video]
+verify_jwt = false

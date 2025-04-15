@@ -80,6 +80,7 @@ const CreatorContent = () => {
         setGeneratedVideoUrl(finalVideoUrl);
         toast.success("Video successfully generated!");
       } else {
+        console.error("No video URL returned from generation process");
         toast.error("Failed to generate video");
       }
     } catch (error) {
@@ -91,12 +92,20 @@ const CreatorContent = () => {
   };
 
   const handleCloseVideoModal = () => {
-    console.log("Closing video modal and revoking URL:", generatedVideoUrl);
+    console.log("Closing video modal and cleaning up resources");
     
-    // Revoke the object URL to free up memory
-    if (generatedVideoUrl) {
+    // Clear stored video data
+    try {
+      sessionStorage.removeItem("processedVideoData");
+    } catch (error) {
+      console.error("Error clearing session storage:", error);
+    }
+    
+    // Revoke the object URL to free up memory if it's a blob URL
+    if (generatedVideoUrl && generatedVideoUrl.startsWith('blob:')) {
       URL.revokeObjectURL(generatedVideoUrl);
     }
+    
     setGeneratedVideoUrl(null);
   };
 
