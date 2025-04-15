@@ -1,6 +1,13 @@
 
 import React, { createContext, useContext, useState } from "react";
 
+interface CTAVideo {
+  file: File;
+  url: string;
+  duration: number;
+  name: string;
+}
+
 interface CreatorContextType {
   adText: string;
   setAdText: (text: string) => void;
@@ -14,6 +21,8 @@ interface CreatorContextType {
   setIsPlaying: (isPlaying: boolean) => void;
   currentTime: number;
   setCurrentTime: (time: number) => void;
+  ctaVideo: CTAVideo | null;
+  setCtaVideo: (video: CTAVideo | null) => void;
 }
 
 const CreatorContext = createContext<CreatorContextType | null>(null);
@@ -33,6 +42,7 @@ export const CreatorProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [selectedMusic, setSelectedMusic] = useState<string | null>("Minecraft 1");
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
+  const [ctaVideo, setCtaVideo] = useState<CTAVideo | null>(null);
 
   return (
     <CreatorContext.Provider
@@ -49,6 +59,8 @@ export const CreatorProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setIsPlaying,
         currentTime,
         setCurrentTime,
+        ctaVideo,
+        setCtaVideo,
       }}
     >
       {children}
