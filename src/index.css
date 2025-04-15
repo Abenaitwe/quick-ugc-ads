@@ -53,6 +53,14 @@
 }
 
 @layer components {
+  input, textarea {
+    @apply focus:ring-purple-500 focus:border-purple-500 hover:border-purple-300 transition-colors;
+  }
+
+  .hover-purple-effect {
+    @apply transition-all duration-300 hover:bg-purple-100 hover:text-purple-700 hover:border-purple-300;
+  }
+
   .template-grid {
     @apply grid grid-cols-4 gap-2 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7;
   }
