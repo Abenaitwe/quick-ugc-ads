@@ -12,7 +12,7 @@ const Creator = () => {
   const { templates, isLoadingTemplates, error } = useTemplates();
 
   const handleGenerateVideo = () => {
-    alert("Video generation would start here");
+    toast.success("Video generation would start here");
   };
 
   return (

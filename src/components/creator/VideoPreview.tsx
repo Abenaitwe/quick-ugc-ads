@@ -1,81 +1,161 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AlertCircle } from "lucide-react";
 
 interface VideoPreviewProps {
   selectedTemplateId: number | null;
   videoUrl?: string;
+  videoError?: string | null;
   adText: string;
   textPosition: "top" | "middle" | "bottom";
   isLoading?: boolean;
 }
 
-const VideoPreview = ({ selectedTemplateId, videoUrl, adText, textPosition, isLoading = false }: VideoPreviewProps) => {
+const VideoPreview = ({
+  selectedTemplateId,
+  videoUrl,
+  videoError,
+  adText,
+  textPosition,
+  isLoading = false
+}: VideoPreviewProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
-  const [videoError, setVideoError] = useState(false);
+  const [localError, setLocalError] = useState<string | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
+  // Reset video state when URL changes
   useEffect(() => {
-    // Reset video state when template changes
-    if (videoUrl) {
-      setVideoLoaded(false);
-      setVideoError(false);
-    }
+    console.log("VideoPreview received videoUrl:", videoUrl);
     
-    // Reset the video when the template changes
+    setVideoLoaded(false);
+    setLocalError(null);
+    
+    if (!videoUrl) return;
+    
+    // Force video element to reload with new source
     if (videoRef.current) {
-      videoRef.current.currentTime = 0;
-      if (selectedTemplateId) {
-        // Auto-play when a template is selected
-        videoRef.current.load(); // Force reload the video
-        videoRef.current.play().catch(err => {
-          console.error("Failed to autoplay:", err);
-        });
-      }
+      videoRef.current.load();
     }
-  }, [selectedTemplateId, videoUrl]);
-
-  // Log when the video URL changes to help debug
-  useEffect(() => {
-    console.log("VideoPreview - videoUrl changed:", videoUrl);
   }, [videoUrl]);
+
+  // Handle video playback when template changes
+  useEffect(() => {
+    if (!videoRef.current || !videoUrl) return;
+    
+    const videoElement = videoRef.current;
+    
+    const handleCanPlay = () => {
+      console.log("Video can play now");
+      setVideoLoaded(true);
+      // Only autoplay if not on mobile (to avoid mobile restrictions)
+      if (!window.matchMedia("(max-width: 768px)").matches) {
+        videoElement.play()
+          .then(() => {
+            console.log("Video playing successfully");
+            setIsPlaying(true);
+          })
+          .catch((err) => {
+            console.error("Error playing video:", err);
+            setLocalError("Autoplay restricted. Please click play.");
+          });
+      }
+    };
+    
+    const handleError = (e: Event) => {
+      console.error("Video error event:", e);
+      setLocalError("Failed to load video");
+      setVideoLoaded(false);
+    };
+    
+    // Add event listeners
+    videoElement.addEventListener("canplay", handleCanPlay);
+    videoElement.addEventListener("error", handleError);
+    
+    // Cleanup
+    return () => {
+      videoElement.removeEventListener("canplay", handleCanPlay);
+      videoElement.removeEventListener("error", handleError);
+    };
+  }, [videoUrl, videoRef.current]);
+
+  const handleVideoClick = () => {
+    if (!videoRef.current) return;
+    
+    if (videoRef.current.paused) {
+      videoRef.current.play()
+        .then(() => {
+          console.log("Video started playing on click");
+          setIsPlaying(true);
+        })
+        .catch(err => {
+          console.error("Failed to play video on click:", err);
+          setLocalError("Unable to play video. Please try again.");
+        });
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  // Display a specific error if we have one
+  const error = videoError || localError;
 
   return (
     <div className="bg-gray-100 rounded-lg p-4">
-      <div className="aspect-[9/16] bg-black rounded-lg overflow-hidden">
+      <div className="aspect-[9/16] bg-black rounded-lg overflow-hidden relative">
         {isLoading ? (
           <div className="w-full h-full flex items-center justify-center">
             <Skeleton className="w-full h-full" />
           </div>
-        ) : selectedTemplateId && videoUrl ? (
-          <div className="relative w-full h-full">
-            {!videoLoaded && !videoError && (
+        ) : !selectedTemplateId ? (
+          <div className="w-full h-full flex items-center justify-center text-gray-500">
+            <p>Select a template to preview</p>
+          </div>
+        ) : !videoUrl ? (
+          <div className="w-full h-full flex items-center justify-center text-gray-500">
+            <p>No video URL available</p>
+          </div>
+        ) : (
+          <div className="relative w-full h-full" onClick={handleVideoClick}>
+            {!videoLoaded && !error && (
               <div className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-10">
                 <div className="h-8 w-8 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
               </div>
             )}
+            
             <video
               ref={videoRef}
               src={videoUrl}
               className="w-full h-full object-cover"
-              controls
+              controls={videoLoaded}
               loop
               playsInline
               poster="/placeholder.svg"
-              onError={(e) => {
-                console.error("Error loading video in preview:", e);
-                setVideoError(true);
-              }}
-              onLoadedData={() => {
-                console.log("Video loaded successfully in preview");
-                setVideoLoaded(true);
-              }}
+              muted // Add muted to help with autoplay restrictions
             />
-            {videoError && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-70 text-white">
-                <p>Error loading video</p>
+            
+            {error && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-70 text-white p-4 text-center">
+                <AlertCircle className="w-8 h-8 mb-2 text-red-400" />
+                <p className="text-lg font-medium">Error loading video</p>
+                <p className="text-sm text-gray-300 mt-1">{error}</p>
+                <button 
+                  className="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (videoRef.current) {
+                      videoRef.current.load();
+                    }
+                    setLocalError(null);
+                  }}
+                >
+                  Try Again
+                </button>
               </div>
             )}
+            
             {adText && videoLoaded && (
               <div className={`absolute left-1/2 -translate-x-1/2 w-full px-4 text-center
                 ${textPosition === 'top' ? 'top-16' : 
@@ -85,10 +165,6 @@ const VideoPreview = ({ selectedTemplateId, videoUrl, adText, textPosition, isLo
                 </span>
               </div>
             )}
-          </div>
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-500">
-            <p>{videoUrl ? "Error loading video" : "Select a template to preview"}</p>
           </div>
         )}
       </div>

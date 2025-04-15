@@ -24,21 +24,21 @@ const TemplateSelector = ({
   isLoading = false,
   error = null
 }: TemplateSelectorProps) => {
-  // Hardcoded template with thumbnail
+  // Hardcoded template with thumbnail for backup
   const hardcodedTemplate = {
     id: 999,
     videoUrl: "https://tsflchdtmzqaavrwidoq.supabase.co/storage/v1/object/public/templates/UGC/111da97d-40cb-4a52-9611-adacc0f65d9e.mp4",
     thumbnailUrl: "/lovable-uploads/76593663-89bd-4add-a795-2069e5463b3a.png"
   };
   
+  // Use templates array if it's not empty, otherwise use hardcoded template
   const displayTemplates = templates.length > 0 ? templates : [hardcodedTemplate];
   
-  // Log when a template is selected for debugging
-  const onTemplateSelect = (id: number) => {
-    console.log("Template selected:", id);
-    const template = displayTemplates.find(t => t.id === id);
-    console.log("Selected template details:", template);
-    handleTemplateSelect(id);
+  // Handle template selection with proper logging
+  const onTemplateSelect = (template: Template) => {
+    console.log("Template selected:", template.id);
+    console.log("Template URL:", template.videoUrl);
+    handleTemplateSelect(template.id);
   };
 
   return (
@@ -64,30 +64,31 @@ const TemplateSelector = ({
             {error ? 'Failed to load templates' : 'No templates available'}
           </div>
         ) : (
-          displayTemplates.map((template) => {
-            return (
-              <div
-                key={template.id}
-                className={`aspect-square cursor-pointer rounded-lg overflow-hidden border-2 transition-all relative ${
-                  selectedTemplateId === template.id
-                    ? "border-green-500 ring-1 ring-green-300"
-                    : "border-gray-200 hover:border-gray-300"
-                }`}
-                onClick={() => onTemplateSelect(template.id)}
-              >
-                <img
-                  src={template.thumbnailUrl || "/placeholder.svg"}
-                  className="w-full h-full object-cover"
-                  alt="Template thumbnail"
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-12 h-12 bg-black/50 rounded-full flex items-center justify-center hover:bg-black/70 transition-colors">
-                    <Play className="w-6 h-6 text-white" />
-                  </div>
+          displayTemplates.map((template) => (
+            <div
+              key={template.id}
+              className={`aspect-square cursor-pointer rounded-lg overflow-hidden border-2 transition-all relative ${
+                selectedTemplateId === template.id
+                  ? "border-green-500 ring-1 ring-green-300"
+                  : "border-gray-200 hover:border-gray-300"
+              }`}
+              onClick={() => onTemplateSelect(template)}
+            >
+              <img
+                src={template.thumbnailUrl || "/placeholder.svg"}
+                className="w-full h-full object-cover"
+                alt="Template thumbnail"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = "/placeholder.svg";
+                }}
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-12 h-12 bg-black/50 rounded-full flex items-center justify-center hover:bg-black/70 transition-colors">
+                  <Play className="w-6 h-6 text-white" />
                 </div>
               </div>
-            );
-          })
+            </div>
+          ))
         )}
       </div>
     </div>
