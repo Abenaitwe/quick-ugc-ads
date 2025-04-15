@@ -1,7 +1,8 @@
 
 import React from "react";
-import { ArrowLeft, Sparkle } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import Logo from "./Logo";
 
 const Header = () => {
   return (
@@ -13,14 +14,7 @@ const Header = () => {
             <span>Back to templates</span>
           </Link>
           
-          <div className="flex items-center">
-            <img 
-              src="/lovable-uploads/396042d0-947d-4846-b9e9-0739e1f53ae6.png" 
-              alt="InstantUGC Logo" 
-              className="h-8 mr-2" 
-            />
-            <h1 className="text-xl font-semibold">AI UGC Video Creator</h1>
-          </div>
+          <Logo />
         </div>
         
         <div className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm flex items-center">
