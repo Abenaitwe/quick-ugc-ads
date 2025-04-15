@@ -16,11 +16,6 @@ const Header = () => {
           
           <Logo />
         </div>
-        
-        <div className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm flex items-center">
-          <span className="bg-green-500 h-2 w-2 rounded-full mr-2"></span>
-          <span>more free sounds & ai modals coming soon</span>
-        </div>
       </div>
     </header>
   );
