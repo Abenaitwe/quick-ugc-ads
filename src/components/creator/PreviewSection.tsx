@@ -27,15 +27,22 @@ const PreviewSection: React.FC<PreviewSectionProps> = ({
 
   const getSelectedVideoUrl = () => {
     if (!selectedTemplateId) return undefined;
+    
+    // Find the template with the matching ID
     const template = templates.find(t => t.id === selectedTemplateId);
+    console.log("Selected template:", template);
+    
     return template ? template.videoUrl : undefined;
   };
+
+  const videoUrl = getSelectedVideoUrl();
+  console.log("Video URL to be passed to preview:", videoUrl);
 
   return (
     <div className="col-span-12 lg:col-span-8 space-y-4">
       <VideoPreview 
         selectedTemplateId={selectedTemplateId}
-        videoUrl={getSelectedVideoUrl()}
+        videoUrl={videoUrl}
         adText={adText}
         textPosition={textPosition}
         isLoading={isLoadingTemplates}

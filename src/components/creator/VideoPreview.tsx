@@ -26,8 +26,11 @@ const VideoPreview = ({ selectedTemplateId, videoUrl, adText, textPosition, isLo
     if (videoRef.current) {
       videoRef.current.currentTime = 0;
       if (selectedTemplateId) {
-        // Pause the video initially
-        videoRef.current.pause();
+        // Auto-play when a template is selected
+        videoRef.current.load(); // Force reload the video
+        videoRef.current.play().catch(err => {
+          console.error("Failed to autoplay:", err);
+        });
       }
     }
   }, [selectedTemplateId, videoUrl]);
@@ -35,13 +38,6 @@ const VideoPreview = ({ selectedTemplateId, videoUrl, adText, textPosition, isLo
   // Log when the video URL changes to help debug
   useEffect(() => {
     console.log("VideoPreview - videoUrl changed:", videoUrl);
-    if (videoUrl) {
-      // Check if URL is valid by creating a test image
-      const testImg = new Image();
-      testImg.onload = () => console.log("URL appears to be valid");
-      testImg.onerror = () => console.log("URL appears to be invalid");
-      testImg.src = videoUrl;
-    }
   }, [videoUrl]);
 
   return (
