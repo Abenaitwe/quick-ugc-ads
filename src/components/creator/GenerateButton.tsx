@@ -16,7 +16,9 @@ const GenerateButton = ({
 }: GenerateButtonProps) => {
   const { isGeneratingVideo, selectedTemplateId } = useCreator();
   
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = () => {
+    console.log("Generate button clicked, selected template ID:", selectedTemplateId);
+    
     if (!selectedTemplateId) {
       toast.error("Please select a template first");
       return;

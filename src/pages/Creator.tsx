@@ -17,6 +17,7 @@ const CreatorContent = () => {
     adText, 
     textPosition, 
     selectedTemplateId, 
+    setSelectedTemplateId,
     ctaVideo,
     generatedVideoUrl,
     setGeneratedVideoUrl,
@@ -26,22 +27,30 @@ const CreatorContent = () => {
 
   // Get the selected template video URL
   const getSelectedTemplateUrl = () => {
+    console.log("Getting template URL for ID:", selectedTemplateId);
+    console.log("Available templates:", templates);
+    
     // Find the template with the matching ID from the templates array
     const selectedTemplate = templates.find(t => t.id === selectedTemplateId);
     
     if (selectedTemplate) {
+      console.log("Found template:", selectedTemplate);
       return selectedTemplate.videoUrl;
     }
     
     // If not found in the templates array, check for hardcoded template
     if (selectedTemplateId === 999) {
+      console.log("Using hardcoded template");
       return "https://tsflchdtmzqaavrwidoq.supabase.co/storage/v1/object/public/templates/UGC/111da97d-40cb-4a52-9611-adacc0f65d9e.mp4";
     }
     
+    console.log("No template found for ID:", selectedTemplateId);
     return null;
   };
 
   const handleGenerateVideo = async () => {
+    console.log("Generating video with template ID:", selectedTemplateId);
+    
     if (!selectedTemplateId) {
       toast.error("Please select a template first");
       return;
