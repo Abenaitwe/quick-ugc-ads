@@ -2,6 +2,7 @@
 // @ts-ignore
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { decode as base64Decode } from "https://deno.land/std@0.208.0/encoding/base64.ts";
 
 // CORS headers for our API
 const corsHeaders = {
@@ -15,6 +16,135 @@ function getFileUrl(storagePath: string): string {
   return `${supabaseUrl}/storage/v1/object/public/${storagePath}`;
 }
 
+async function downloadVideo(url: string): Promise<Uint8Array> {
+  console.log(`Downloading video from ${url}`);
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to download video: ${response.status}`);
+  }
+  const buffer = await response.arrayBuffer();
+  return new Uint8Array(buffer);
+}
+
+async function uploadVideoToStorage(
+  supabase: any, 
+  videoData: Uint8Array, 
+  fileName: string
+): Promise<string> {
+  console.log(`Uploading processed video ${fileName}`);
+  
+  try {
+    // Upload to the processed-videos bucket
+    const { data, error } = await supabase.storage
+      .from('processed-videos')
+      .upload(fileName, videoData, {
+        contentType: 'video/mp4',
+        upsert: true
+      });
+    
+    if (error) {
+      throw error;
+    }
+    
+    // Generate a public URL for the uploaded video
+    const { data: { publicUrl } } = supabase.storage
+      .from('processed-videos')
+      .getPublicUrl(fileName);
+      
+    console.log(`Video uploaded successfully, public URL: ${publicUrl}`);
+    return publicUrl;
+  } catch (error) {
+    console.error("Error uploading video:", error);
+    throw error;
+  }
+}
+
+/**
+ * This function simulates adding a text overlay to a video.
+ * In a production environment, we would use FFmpeg to actually process the video.
+ */
+async function processVideoWithFFmpeg(
+  templateVideo: Uint8Array, 
+  ctaVideo: Uint8Array | null,
+  adText: string,
+  textPosition: string
+): Promise<Uint8Array> {
+  console.log("Processing video with FFmpeg simulation");
+  
+  // For now, we just return the template video
+  // In a real implementation, we would use FFmpeg to add text overlay and merge videos
+  
+  // Here's a pseudocode example of what the FFmpeg implementation would look like:
+  /*
+  // Create a temporary file for the input video
+  const tempInputPath = `temp-${Date.now()}.mp4`;
+  await Deno.writeFile(tempInputPath, templateVideo);
+  
+  // Create a temporary file for the output
+  const tempOutputPath = `output-${Date.now()}.mp4`;
+  
+  // Determine text position parameters
+  let textY = "h/2"; // Default to middle
+  if (textPosition === "top") textY = "h*0.2";
+  else if (textPosition === "bottom") textY = "h*0.8";
+  
+  // FFmpeg command to add text overlay
+  const command = new Deno.Command("ffmpeg", {
+    args: [
+      "-i", tempInputPath,
+      "-vf", `drawtext=text='${adText}':fontcolor=white:fontsize=24:x=(w-text_w)/2:y=${textY}:box=1:boxcolor=black@0.5:boxborderw=5`,
+      "-c:a", "copy",
+      tempOutputPath
+    ]
+  });
+  
+  await command.output();
+  
+  let finalVideoData = await Deno.readFile(tempOutputPath);
+  
+  // If we have a CTA video, merge it with the template
+  if (ctaVideo) {
+    const tempCtaPath = `cta-${Date.now()}.mp4`;
+    await Deno.writeFile(tempCtaPath, ctaVideo);
+    
+    const tempMergedPath = `merged-${Date.now()}.mp4`;
+    
+    // Create a file list for FFmpeg concat
+    const fileListPath = `list-${Date.now()}.txt`;
+    await Deno.writeTextFile(fileListPath, `file '${tempOutputPath}'\nfile '${tempCtaPath}'`);
+    
+    // FFmpeg command to concatenate videos
+    const mergeCommand = new Deno.Command("ffmpeg", {
+      args: [
+        "-f", "concat",
+        "-safe", "0",
+        "-i", fileListPath,
+        "-c", "copy",
+        tempMergedPath
+      ]
+    });
+    
+    await mergeCommand.output();
+    
+    finalVideoData = await Deno.readFile(tempMergedPath);
+    
+    // Clean up temporary CTA and merged files
+    await Deno.remove(tempCtaPath);
+    await Deno.remove(tempMergedPath);
+    await Deno.remove(fileListPath);
+  }
+  
+  // Clean up temporary input/output files
+  await Deno.remove(tempInputPath);
+  await Deno.remove(tempOutputPath);
+  
+  return finalVideoData;
+  */
+  
+  // For now, just return the template video as a simulation
+  return templateVideo;
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
@@ -23,7 +153,7 @@ serve(async (req) => {
 
   try {
     console.log("Processing video request received");
-    const { templateVideoUrl, ctaVideoUrl, adText, textPosition } = await req.json();
+    const { templateVideoUrl, ctaVideoUrl, adText, textPosition, includeOverlayInFinal } = await req.json();
 
     if (!templateVideoUrl) {
       return new Response(
@@ -36,24 +166,45 @@ serve(async (req) => {
     console.log("CTA video URL:", ctaVideoUrl);
     console.log("Ad text:", adText);
     console.log("Text position:", textPosition);
+    console.log("Include overlay in final download:", includeOverlayInFinal);
 
-    // Create a Supabase client (we'll use this to upload the processed video)
+    // Create a Supabase client for storage operations
     const supabaseUrl = "https://tsflchdtmzqaavrwidoq.supabase.co";
     const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY") || "";
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // In a production environment, we would use FFmpeg here to:
-    // 1. Download template video
-    // 2. Add text overlay at specified position
-    // 3. If CTA video exists, merge it with the template
-    // 4. Upload the result to a processed-videos bucket
-    //
-    // For now, we'll simulate this by:
-    // - Creating a unique storage path for the processed video
-    // - "Uploading" the original template video (as we can't modify it yet)
-    // - Returning metadata about the text overlay for client-side display
+    // Download the template video
+    const templateVideoData = await downloadVideo(templateVideoUrl);
+    console.log("Template video downloaded, size:", templateVideoData.length);
+    
+    // Download the CTA video if provided
+    let ctaVideoData = null;
+    if (ctaVideoUrl) {
+      ctaVideoData = await downloadVideo(ctaVideoUrl);
+      console.log("CTA video downloaded, size:", ctaVideoData.length);
+    }
 
-    // For now, we're storing the metadata with the video details
+    // Process the video (add text overlay and merge with CTA)
+    // In a real implementation, this would use FFmpeg
+    const processedVideoData = await processVideoWithFFmpeg(
+      templateVideoData,
+      ctaVideoData,
+      adText,
+      textPosition
+    );
+
+    // Generate a unique ID for this processed video
+    const processedVideoId = crypto.randomUUID();
+    const processedVideoPath = `${processedVideoId}.mp4`;
+
+    // Upload the processed video to Supabase Storage
+    const videoUrl = await uploadVideoToStorage(
+      supabase,
+      processedVideoData,
+      processedVideoPath
+    );
+
+    // Store metadata about the processed video
     const processedVideoMeta = {
       originalTemplateUrl: templateVideoUrl,
       ctaVideoUrl: ctaVideoUrl || null,
@@ -62,23 +213,17 @@ serve(async (req) => {
       processedAt: new Date().toISOString(),
     };
 
-    // Generate a unique ID for this processed video
-    const processedVideoId = crypto.randomUUID();
-    const processedVideoPath = `processed-videos/${processedVideoId}.mp4`;
-
-    // In a real implementation, we would download and process the video before uploading
-    // For now, we'll simulate a successful processing by returning data
-    const simulatedResponse = {
-      videoUrl: templateVideoUrl, // Using original URL for now
+    const response = {
+      videoUrl,
       processedVideoId,
       metadata: processedVideoMeta,
     };
 
-    console.log("Video processing simulation complete:", simulatedResponse);
+    console.log("Video processing complete:", response);
 
     // Return the result to the client
     return new Response(
-      JSON.stringify(simulatedResponse),
+      JSON.stringify(response),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
 
