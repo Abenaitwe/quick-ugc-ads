@@ -3,3 +3,4 @@ project_id = "tsflchdtmzqaavrwidoq"
 
 [functions.process-video]
 verify_jwt = false
+image = "ghcr.io/abenaitwe/process-video-ffmpeg:latest"

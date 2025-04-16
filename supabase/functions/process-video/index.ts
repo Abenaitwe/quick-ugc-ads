@@ -60,8 +60,7 @@ async function uploadVideoToStorage(
 }
 
 /**
- * This function simulates adding a text overlay to a video.
- * In a production environment, we would use FFmpeg to actually process the video.
+ * This function processes a video with FFmpeg to add text overlay and merge with a CTA video.
  */
 async function processVideoWithFFmpeg(
   templateVideo: Uint8Array, 
@@ -69,13 +68,8 @@ async function processVideoWithFFmpeg(
   adText: string,
   textPosition: string
 ): Promise<Uint8Array> {
-  console.log("Processing video with FFmpeg simulation");
+  console.log("Processing video with FFmpeg");
   
-  // For now, we just return the template video
-  // In a real implementation, we would use FFmpeg to add text overlay and merge videos
-  
-  // Here's a pseudocode example of what the FFmpeg implementation would look like:
-  /*
   // Create a temporary file for the input video
   const tempInputPath = `temp-${Date.now()}.mp4`;
   await Deno.writeFile(tempInputPath, templateVideo);
@@ -83,66 +77,90 @@ async function processVideoWithFFmpeg(
   // Create a temporary file for the output
   const tempOutputPath = `output-${Date.now()}.mp4`;
   
-  // Determine text position parameters
-  let textY = "h/2"; // Default to middle
-  if (textPosition === "top") textY = "h*0.2";
-  else if (textPosition === "bottom") textY = "h*0.8";
-  
-  // FFmpeg command to add text overlay
-  const command = new Deno.Command("ffmpeg", {
-    args: [
-      "-i", tempInputPath,
-      "-vf", `drawtext=text='${adText}':fontcolor=white:fontsize=24:x=(w-text_w)/2:y=${textY}:box=1:boxcolor=black@0.5:boxborderw=5`,
-      "-c:a", "copy",
-      tempOutputPath
-    ]
-  });
-  
-  await command.output();
-  
-  let finalVideoData = await Deno.readFile(tempOutputPath);
-  
-  // If we have a CTA video, merge it with the template
-  if (ctaVideo) {
-    const tempCtaPath = `cta-${Date.now()}.mp4`;
-    await Deno.writeFile(tempCtaPath, ctaVideo);
+  try {
+    // Determine text position parameters
+    let textY = "h/2"; // Default to middle
+    if (textPosition === "top") textY = "h*0.2";
+    else if (textPosition === "bottom") textY = "h*0.8";
     
-    const tempMergedPath = `merged-${Date.now()}.mp4`;
-    
-    // Create a file list for FFmpeg concat
-    const fileListPath = `list-${Date.now()}.txt`;
-    await Deno.writeTextFile(fileListPath, `file '${tempOutputPath}'\nfile '${tempCtaPath}'`);
-    
-    // FFmpeg command to concatenate videos
-    const mergeCommand = new Deno.Command("ffmpeg", {
+    // FFmpeg command to add text overlay
+    const command = new Deno.Command("ffmpeg", {
       args: [
-        "-f", "concat",
-        "-safe", "0",
-        "-i", fileListPath,
-        "-c", "copy",
-        tempMergedPath
+        "-i", tempInputPath,
+        "-vf", `drawtext=text='${adText}':fontcolor=white:fontsize=24:x=(w-text_w)/2:y=${textY}:box=1:boxcolor=black@0.5:boxborderw=5`,
+        "-c:a", "copy",
+        tempOutputPath
       ]
     });
     
-    await mergeCommand.output();
+    const { code: exitCode } = await command.output();
     
-    finalVideoData = await Deno.readFile(tempMergedPath);
+    if (exitCode !== 0) {
+      throw new Error(`FFmpeg command failed with exit code ${exitCode}`);
+    }
     
-    // Clean up temporary CTA and merged files
-    await Deno.remove(tempCtaPath);
-    await Deno.remove(tempMergedPath);
-    await Deno.remove(fileListPath);
+    let finalOutputPath = tempOutputPath;
+    
+    // If we have a CTA video, merge it with the template
+    if (ctaVideo) {
+      const tempCtaPath = `cta-${Date.now()}.mp4`;
+      await Deno.writeFile(tempCtaPath, ctaVideo);
+      
+      const tempMergedPath = `merged-${Date.now()}.mp4`;
+      
+      // Create a file list for FFmpeg concat
+      const fileListPath = `list-${Date.now()}.txt`;
+      await Deno.writeTextFile(fileListPath, `file '${tempOutputPath}'\nfile '${tempCtaPath}'`);
+      
+      // FFmpeg command to concatenate videos
+      const mergeCommand = new Deno.Command("ffmpeg", {
+        args: [
+          "-f", "concat",
+          "-safe", "0",
+          "-i", fileListPath,
+          "-c", "copy",
+          tempMergedPath
+        ]
+      });
+      
+      const { code: mergeExitCode } = await mergeCommand.output();
+      
+      if (mergeExitCode !== 0) {
+        throw new Error(`FFmpeg merge command failed with exit code ${mergeExitCode}`);
+      }
+      
+      finalOutputPath = tempMergedPath;
+      
+      // Clean up temporary CTA file and file list
+      try {
+        await Deno.remove(tempCtaPath);
+        await Deno.remove(fileListPath);
+      } catch (cleanupError) {
+        console.error("Error cleaning up temporary files:", cleanupError);
+      }
+    }
+    
+    // Read the final processed video
+    const finalVideoData = await Deno.readFile(finalOutputPath);
+    
+    return finalVideoData;
+  } catch (error) {
+    console.error("Error processing video with FFmpeg:", error);
+    throw error;
+  } finally {
+    // Clean up temporary input/output files
+    try {
+      if (await Deno.stat(tempInputPath).then(() => true).catch(() => false)) {
+        await Deno.remove(tempInputPath);
+      }
+      
+      if (await Deno.stat(tempOutputPath).then(() => true).catch(() => false)) {
+        await Deno.remove(tempOutputPath);
+      }
+    } catch (cleanupError) {
+      console.error("Error cleaning up temporary files:", cleanupError);
+    }
   }
-  
-  // Clean up temporary input/output files
-  await Deno.remove(tempInputPath);
-  await Deno.remove(tempOutputPath);
-  
-  return finalVideoData;
-  */
-  
-  // For now, just return the template video as a simulation
-  return templateVideo;
 }
 
 serve(async (req) => {
@@ -185,7 +203,6 @@ serve(async (req) => {
     }
 
     // Process the video (add text overlay and merge with CTA)
-    // In a real implementation, this would use FFmpeg
     const processedVideoData = await processVideoWithFFmpeg(
       templateVideoData,
       ctaVideoData,
